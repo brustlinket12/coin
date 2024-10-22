@@ -23,5 +23,11 @@ npm install @lottiefiles/react-lottie-player}}
     - prettier (50,145,003 de descargas ) ->  https://www.youtube.com/watch?v=OmwrOgUXWBs  }}
 
 
+{BASE DE DATOS :supabase
+  contrasena : MediaNoche123567
+npm install @supabase/supabase-js
 
-    supabase : MediaNoche123567
+
+}
+    
+
