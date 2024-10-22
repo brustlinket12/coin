@@ -1,0 +1,27 @@
+
+1. dentro del projecto hay una carpeta llamada Paginas , alli crearan cada pagina y luego las importaran a App.jsx para mostrarla
+2. pueden borrar la que ya esta importada para que prueben las suyas
+3. cada uno por minimo debe hacer 2 paginas  , dejando de ultimo las funciones de histogramas o graficas 
+4. cuando vayan a ver su host ( npm run dev) nunca borren la terminan esa xq si no no funciona ( yo la cague )
+5. Prueben las paginas que ya estan hechas para que se guien
+
+BIBLIOTECA DE COMPONENTES Y ESTILOS  : https://mui.com/material-ui/api/button/
+TUTORIALES DE DICHA BIBLIOTECA : https://www.youtube.com/watch?v=Un0qRgXNS9E&list=PLPl81lqbj-4J2xx_YAb97dpCG1rxl2wv-&index=1
+BASE DE DATOS : por definir
+
+
+
+{{ANIMACIONES : LOOTTIEFILES https://lottiefiles.com/ 
+
+Instalacion:
+npm install react-lottie-player
+npm install @lottiefiles/react-lottie-player}}
+
+
+{{EXTENSIONES DE VSCODE :
+    -  ES7 +react/redux ( 13,034,628 de descargas)
+    - prettier (50,145,003 de descargas ) ->  https://www.youtube.com/watch?v=OmwrOgUXWBs  }}
+
+
+
+    supabase : MediaNoche123567
