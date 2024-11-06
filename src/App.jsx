@@ -8,6 +8,9 @@ export default function App() {
   return (
     <div>
       <PaginaInicio/>
+      {/* <PaginaTutorial/>
+      <PaginaInicioSesion/>
+      <PaginaInicioRegistrar/> */}
     </div>
   );
 }

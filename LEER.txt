@@ -11,7 +11,7 @@ BASE DE DATOS : por definir
 
 
 
-{{ANIMACIONES : LOOTTIEFILES https://lottiefiles.com/ 
+{{ANIMACIONES : LOOTTIEFILES https://lottiefiles.com/
 
 Instalacion:
 npm install react-lottie-player
