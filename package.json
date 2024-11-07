@@ -16,6 +16,7 @@
     "@lottiefiles/react-lottie-player": "^3.5.4",
     "@mui/material": "^6.1.4",
     "@supabase/supabase-js": "^2.45.6",
+    "coin": "file:",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-lottie-player": "^2.1.0"
