@@ -16,6 +16,9 @@ BASE DE DATOS : por definir
 Instalacion:
 npm install react-lottie-player
 npm install @lottiefiles/react-lottie-player}}
+
+COSAS NUEVAS Q INSTALAR
+
 npm install @mui/material @emotion/react @emotion/styled
 npm install @mui/icons-material @mui/material @emotion/styled @emotion/react
 npm install @mui/x-charts
