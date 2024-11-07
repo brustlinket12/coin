@@ -3,6 +3,7 @@ import PaginaInicio from './Paginas/PaginaInicio'; // Asegúrate de que la ruta 
 import PaginaTutorial from './Paginas/PaginaTutorial';
 import PaginaInicioSesion from './Paginas/PaginaInicioSesion';
 import PaginaInicioRegistrar from './Paginas/PaginaInicioRegistrar';
+import PaginaDashboard from './Paginas/PaginaDashboard';
 
 export default function App() {
   return (
@@ -10,7 +11,9 @@ export default function App() {
       <PaginaInicio/>
       {/* <PaginaTutorial/>
       <PaginaInicioSesion/>
-      <PaginaInicioRegistrar/> */}
+      <PaginaInicioRegistrar/> 
+      <PaginaDashboard/>
+      */}
     </div>
   );
 }
