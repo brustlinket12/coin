@@ -11,8 +11,10 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
+
 // Importa la imagen personalizada
 import CustomLogo from '/src/assets/img/logo1.png'; // Ajusta la ruta según la ubicación de tu imagen
+import Navbar from './SideNavOpener';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -42,6 +44,7 @@ function Header() {
         }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
+                    <Navbar/>
                     {/* Reemplaza el AdbIcon con la imagen personalizada */}
                     <Box
                         component="img"

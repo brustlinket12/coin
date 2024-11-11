@@ -9,11 +9,11 @@ export default function App() {
   return (
     <div>
       <PaginaInicioRegistrar/>
-      {/* <PaginaTutorial/>
+      <PaginaTutorial/>
       <PaginaInicioSesion/>
       <PaginaInicioRegistrar/> 
       <PaginaDashboard/>
-      */}
+     
     </div>
   );
 }
