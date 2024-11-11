@@ -1,7 +1,7 @@
 import { Container, Box, Button, TextField } from "@mui/material";
 import { Player } from "@lottiefiles/react-lottie-player";
 import logo3 from "../assets/img/logo3.json";
-function PaginaTutorial() {
+function PaginaMonto() {
   return (
     <Box display="flex" justifyContent="space-between" width="100%">
       {/*Izquierda */}
@@ -69,4 +69,4 @@ function PaginaTutorial() {
   );
 }
 
-export default PaginaTutorial;
+export default PaginaMonto;

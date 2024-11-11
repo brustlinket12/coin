@@ -1,8 +1,52 @@
 import { Box, Button, TextField, Paper } from "@mui/material";
 import logo4 from "../assets/img/Logo4.json";
 import { Player } from "@lottiefiles/react-lottie-player";
+import { useState } from "react";
+import{tables} from "../types/core";
+import { insertData } from "../Services/supabase";
 
 function PaginaInicioRegistrar() {
+
+
+  const [error, setError] = useState('');
+
+const [values,setValues]=useState({
+  correo:"",
+  contrasena:""
+})
+
+
+const handleChange=(e)=>{
+  setValues({
+    ...values,
+    [e.target.name]:e.target.value
+  })
+}
+
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!values.correo || !values.contrasena) {
+    setError('Correo y Contraseña son obligatorios');
+    console.log("no seas awebao  , como vas a dejas las vainas vacias");
+    return;
+  }
+
+
+  setError('');
+
+  const result = await insertData(tables.prueba, values);
+
+  if (result) {
+    console.log("Te felicito, campeón, ¡le metiste los datos!");
+  } else {
+    console.log("No papa , te faltó yuca para meter los datos bien");
+  }
+
+  console.log('Formulario enviado');
+};
+
   return (
     <Box
       sx={{
@@ -45,12 +89,19 @@ function PaginaInicioRegistrar() {
         >
           <Box display="flex" flexDirection="column" alignItems="center">
             <h1 style={{ color: "white" }}>Registrate</h1>
-            <h3 style={{ color: "white" }}>Unete a la familia de Coin Guard!!</h3>
+            <h3 style={{ color: "white" }}>
+              Unete a la familia de Coin Guard!!
+            </h3>
 
             <TextField
               variant="standard"
               focused
               label=" Correo electronico"
+              type="text"
+              name="correo"
+              value={values.correo}
+              onChange={handleChange}
+              
               InputProps={{
                 style: { color: "white" },
               }}
@@ -63,27 +114,15 @@ function PaginaInicioRegistrar() {
                 marginBottom: "36px",
               }}
             />
-            <TextField
-              variant="standard"
-              label="Nombre de usuario"
-              focused
-              InputProps={{
-                style: { color: "white" },
-              }}
-              InputLabelProps={{
-                style: { color: "white" },
-              }}
-              sx={{
-                "& .MuiInput-underline:after": { borderBottomColor: "black" },
-                backgroundColor: "transparent",
-                marginBottom: "36px",
-              }}
-            />
-
             <TextField
               variant="standard"
               label="Contrasena"
               focused
+              type="text"
+              name="contrasena"
+              value={values.contrasena}
+              onChange={handleChange}
+              required 
               InputProps={{
                 style: { color: "white" },
               }}
@@ -106,8 +145,9 @@ function PaginaInicioRegistrar() {
                 backgroundColor: "rgba(8, 28, 53, 1)",
                 boxShadow: "0px 4px 10px 0px rgba(255, 255, 255, 0.1)",
               }}
+              onClick={handleSubmit}
             >
-              iniciar sesión
+              Registrarse
             </Button>
           </Box>
         </Paper>
