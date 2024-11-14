@@ -19,7 +19,7 @@ const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#20314f', // #0D1127
   ...theme.typography.body2,
   padding: theme.spacing(1),
-  textAlign: 'left',
+  textAlign: 'center',
   color: theme.palette.text.secondary,
   ...theme.applyStyles('dark', {
       backgroundColor: '#060618',
@@ -58,20 +58,21 @@ function Recordatorios() {
             borderRadius: "16px",
         }}
     >
-      <Grid size={5}>
+      <Grid size={5}
+      >
          <Item>
-             <StyledCard sx={{ maxWidth: 750, height: 218 }}>
+             <StyledCard sx={{ maxWidth: 700, height: 100 }}>
                   <CardContent>
                       <Stack direction={"row"} spacing={12}>
                             <Typography gutterBottom variant="h5" component="div">
                                                 Añadir Recordatorio
                             </Typography>
                             </Stack>  
-                                        <IconButton style={{float:'right', backgroundColor:' #808080', color:"#FFFFFF"}} onClick={openDialog}> <QueueIcon ></QueueIcon > </IconButton>
+                                        <IconButton style={{backgroundColor:' #808080', color:"#FFFFFF"}} onClick={openDialog}> <QueueIcon ></QueueIcon > </IconButton>
                                             {/* <Button variant='contained' onClick={openDialog}> + </Button> */}
                                             <Dialog open={open} onClose={closeDialog} fullWidth aria-labelledby='dialog-title' >
                                                 <DialogTitle> Añadir Recordatorio
-                                                <IconButton style={{float:'right', color:'#f55b5b'}} onClick={closeDialog}> <Close></Close> </IconButton>
+                                                <IconButton style={{ color:'#f55b5b'}} onClick={closeDialog}> <Close></Close> </IconButton>
                                                 </DialogTitle>
                                                 <DialogContent dividers>
                                                     <Stack spacing={2} margin={2}>
