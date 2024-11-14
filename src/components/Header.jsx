@@ -40,7 +40,8 @@ function Header() {
     return (
         <AppBar position="fixed" 
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, 
-            backgroundColor: '#294067'
+            backgroundColor: '#294067',
+            color : 'white'
         }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
@@ -63,7 +64,7 @@ function Header() {
                             fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
-                            color: 'inherit',
+                            color: '#FFFFFF',
                             textDecoration: 'none',
                         }}
                     >

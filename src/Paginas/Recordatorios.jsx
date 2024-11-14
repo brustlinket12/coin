@@ -115,7 +115,7 @@ function Recordatorios() {
                                     </CardContent>
                                 </StyledCard>
                             </Item>
-                        </Grid>          
+                        </Grid>
     </Box>
   );
 }
