@@ -12,8 +12,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import TextField from '@mui/material/TextField';
 import IconButton from "@mui/material/IconButton";
-import AddCardIcon from '@mui/icons-material/AddCard';
-import { useState } from "react";
+import QueueIcon from '@mui/icons-material/Queue';import { useState } from "react";
 import { Close } from "@mui/icons-material";
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -60,15 +59,15 @@ function Recordatorios() {
         }}
     >
       <Grid size={5}>
-                            <Item>
-                                <StyledCard sx={{ maxWidth: 750, height: 218 }}>
-                                    <CardContent>
-                                        <Stack direction={"row"} spacing={12}>
-                                            <Typography gutterBottom variant="h5" component="div">
+         <Item>
+             <StyledCard sx={{ maxWidth: 750, height: 218 }}>
+                  <CardContent>
+                      <Stack direction={"row"} spacing={12}>
+                            <Typography gutterBottom variant="h5" component="div">
                                                 Añadir Recordatorio
-                                            </Typography>
-                                        </Stack>  
-                                        <IconButton style={{float:'right', backgroundColor:'#2a702c', color:"#5BF561"}} onClick={openDialog}> <AddCardIcon></AddCardIcon> </IconButton>
+                            </Typography>
+                            </Stack>  
+                                        <IconButton style={{float:'right', backgroundColor:' #808080', color:"#FFFFFF"}} onClick={openDialog}> <QueueIcon ></QueueIcon > </IconButton>
                                             {/* <Button variant='contained' onClick={openDialog}> + </Button> */}
                                             <Dialog open={open} onClose={closeDialog} fullWidth aria-labelledby='dialog-title' >
                                                 <DialogTitle> Añadir Recordatorio
