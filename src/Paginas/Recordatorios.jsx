@@ -1,7 +1,51 @@
 import { Container, Box, Button } from "@mui/material";
+import { Typography } from "@mui/material";
+import { styled } from '@mui/material/styles';
+import Paper from '@mui/material/Paper';
+import Grid from "@mui/material/Grid2";
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Stack from '@mui/material/Stack';
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import TextField from '@mui/material/TextField';
+import IconButton from "@mui/material/IconButton";
+import AddCardIcon from '@mui/icons-material/AddCard';
+import { useState } from "react";
+import { Close } from "@mui/icons-material";
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: '#20314f', // #0D1127
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'left',
+  color: theme.palette.text.secondary,
+  ...theme.applyStyles('dark', {
+      backgroundColor: '#060618',
+  }),
+}));
+
+const StyledCard = styled(Card)(({ theme }) => ({
+  backgroundColor: '#294067', 
+  color: '#FFFFFF', // color del texto
+  padding: theme.spacing(2),
+  '& .MuiTypography-root': {
+      color: '#FFFFFF', // ajusta el color de todos los textos dentro del Card
+  },
+}));
 
 
 function Recordatorios() {
+  
+    const [open, setOpen] = useState(false);
+    const openDialog = () => {
+        setOpen(true);
+    }
+    const closeDialog = () => {
+        setOpen(false);
+    }
   return (
     <Box 
         sx={{
@@ -15,8 +59,63 @@ function Recordatorios() {
             borderRadius: "16px",
         }}
     >
-      
-        
+      <Grid size={5}>
+                            <Item>
+                                <StyledCard sx={{ maxWidth: 750, height: 218 }}>
+                                    <CardContent>
+                                        <Stack direction={"row"} spacing={12}>
+                                            <Typography gutterBottom variant="h5" component="div">
+                                                Añadir Recordatorio
+                                            </Typography>
+                                        </Stack>  
+                                        <IconButton style={{float:'right', backgroundColor:'#2a702c', color:"#5BF561"}} onClick={openDialog}> <AddCardIcon></AddCardIcon> </IconButton>
+                                            {/* <Button variant='contained' onClick={openDialog}> + </Button> */}
+                                            <Dialog open={open} onClose={closeDialog} fullWidth aria-labelledby='dialog-title' >
+                                                <DialogTitle> Añadir Recordatorio
+                                                <IconButton style={{float:'right', color:'#f55b5b'}} onClick={closeDialog}> <Close></Close> </IconButton>
+                                                </DialogTitle>
+                                                <DialogContent dividers>
+                                                    <Stack spacing={2} margin={2}>
+                                                        <TextField 
+                                                        variant="outlined" 
+                                                        label="Título" 
+                                                        ></TextField>
+
+                                                        <TextField 
+                                                        variant="outlined" 
+                                                        label="Descripción del Recordatorio"
+                                                        ></TextField>
+
+                                                        <TextField 
+                                                        variant="outlined" 
+                                                        label="Monto" 
+                                                        type="number"
+                                                        inputProps={{min:"0", step:"0.01"}}
+                                                        onChange={(e) => {
+                                                            const value = parseFloat(e.target.value);
+                                                            if (value < 0) e.target.value = ""; // resetea si es negativo
+                                                        }}
+                                                        ></TextField>
+
+                                                        <TextField 
+                                                        variant="outlined" 
+                                                        label="Fecha"
+                                                        type="date"
+                                                        InputLabelProps={{
+                                                            shrink: true,
+                                                        }}
+                                                        ></TextField>
+                                                    </Stack>
+                                                </DialogContent>
+                                                <DialogActions>
+                                                    <Button variant="contained" color="success" onClick={closeDialog}>Añadir</Button> {/* este boton debe enviar info a la base de datos */}
+                                                    <Button variant="contained" color="error" onClick={closeDialog}>Egreso</Button> {/* este boton debe enviar info a la base de datos */}
+                                                </DialogActions>
+                                            </Dialog>
+                                    </CardContent>
+                                </StyledCard>
+                            </Item>
+                        </Grid>          
     </Box>
   );
 }

@@ -8,10 +8,10 @@ import Recordatorios from './Paginas/Recordatorios';
 export default function App() {
   return (
     <div>
-      <PaginaInicioRegistrar/>
+      {/*<PaginaInicioRegistrar/>
       <PaginaTutorial/>
       <PaginaInicioSesion/>
-      <PaginaInicioRegistrar/> 
+      <PaginaInicioRegistrar/> */}
       {/*<PaginaDashboard/>*/}
       <Recordatorios/>
     </div>
