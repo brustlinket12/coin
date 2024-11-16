@@ -8,8 +8,7 @@ import { createClient } from '@supabase/supabase-js'
 
 );
 
-//funcion iniciar sesion
-
+//funcion para ingresar usuarios nuevos uwu
 export const registrarUsuario = async ({ email, password }) => {
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -24,7 +23,7 @@ export const registrarUsuario = async ({ email, password }) => {
 };
 
 
-
+// funcion para iniciar sesion uwu
 export const iniciarSesion = async ({ email, password }) => {
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
