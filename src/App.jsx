@@ -18,6 +18,7 @@ function App() {
         <Route path="/inicio-sesion" element={<PaginaInicioSesion />} />
         <Route path="/registrar" element={<PaginaInicioRegistrar />} />
         <Route path="/dashboard" element={<PaginaDashboard />} />
+        <Route path="/monto" element={<PaginaMonto />} />
         {/* Agrega más rutas si es necesario */}
       </Routes>
     </Router>
