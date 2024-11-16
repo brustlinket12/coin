@@ -9,7 +9,7 @@ function PaginaInicio() {
 
   // Funciones para manejar los clics de los botones
   const handleLoginClick = () => {
-    navigate("/inicioSesion");  // Redirige a la página de inicio sesión
+    navigate("/inicio-sesion");  // Redirige a la página de inicio sesión
   };
 
   const handleRegisterClick = () => {
