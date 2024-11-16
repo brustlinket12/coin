@@ -2,50 +2,48 @@ import { Box, Button, TextField, Paper } from "@mui/material";
 import logo4 from "../assets/img/Logo4.json";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { useState } from "react";
-import{tables} from "../types/core";
-import { insertData } from "../Services/supabase";
+import { registrarUsuario } from "../Services/supabase.js";
+
 
 function PaginaInicioRegistrar() {
-
-
   const [error, setError] = useState('');
+  const [values, setValues] = useState({
+    email: "",
+    password: "",
+  });
 
-const [values,setValues]=useState({
-  correo:"",
-  contrasena:""
-})
+  const handleChange = (e) => {
+    setValues({
+      ...values,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-
-const handleChange=(e)=>{
-  setValues({
-    ...values,
-    [e.target.name]:e.target.value
-  })
-}
-
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  if (!values.correo || !values.contrasena) {
-    setError('Correo y Contraseña son obligatorios');
-    console.log("no seas awebao  , como vas a dejas las vainas vacias");
-    return;
-  }
-
-
-  setError('');
-
-  const result = await insertData(tables.prueba, values);
-
-  if (result) {
-    console.log("Te felicito, campeón, ¡le metiste los datos!");
-  } else {
-    console.log("No papa , te faltó yuca para meter los datos bien");
-  }
-
-  console.log('Formulario enviado');
-};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    if (!values.email || !values.password) {
+      setError("Correo y Contraseña son obligatorios");
+      console.log("No puedes dejar los campos vacíos.");
+      return;
+    }
+  
+    setError("");
+  
+    // Llamar a la función registrarUsuario
+    const result = await registrarUsuario({
+      email: values.email,
+      password: values.password,
+    });
+  
+    if (result.error) {
+      console.log("Error al registrar usuario:", result.error);
+      setError(result.error);
+    } else {
+      console.log("Usuario registrado exitosamente:", result.user);
+      setError("Usuario registrado correctamente. Verifica tu correo.");
+    }
+  };
 
   return (
     <Box
@@ -88,20 +86,21 @@ const handleSubmit = async (e) => {
           }}
         >
           <Box display="flex" flexDirection="column" alignItems="center">
-            <h1 style={{ color: "white" }}>Registrate</h1>
+            <h1 style={{ color: "white" }}>Registrate!</h1>
             <h3 style={{ color: "white" }}>
-              Unete a la familia de Coin Guard!!
+              Únete a la familia de Coin Guard!!
             </h3>
+
+            {error && <p style={{ color: "red" }}>{error}</p>}
 
             <TextField
               variant="standard"
               focused
-              label=" Correo electronico"
+              label="Correo electrónico"
               type="text"
-              name="correo"
-              value={values.correo}
+              name="email"
+              value={values.email}
               onChange={handleChange}
-              
               InputProps={{
                 style: { color: "white" },
               }}
@@ -116,13 +115,13 @@ const handleSubmit = async (e) => {
             />
             <TextField
               variant="standard"
-              label="Contrasena"
+              label="Contraseña"
               focused
-              type="text"
-              name="contrasena"
-              value={values.contrasena}
+              type="password"
+              name="password"
+              value={values.password}
               onChange={handleChange}
-              required 
+              required
               InputProps={{
                 style: { color: "white" },
               }}

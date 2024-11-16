@@ -22,7 +22,7 @@ COSAS NUEVAS Q INSTALAR
 npm install @mui/material @emotion/react @emotion/styled
 npm install @mui/icons-material @mui/material @emotion/styled @emotion/react
 npm install @mui/x-charts
-
+npm install react-router-dom
 
 {{EXTENSIONES DE VSCODE :
     -  ES7 +react/redux ( 13,034,628 de descargas)
@@ -33,7 +33,10 @@ npm install @mui/x-charts
   contrasena : MediaNoche123567
 npm install @supabase/supabase-js
 
+USUARIO DE PRUEBA:
 
+pedro@medianoche.com
+dragon123456
 }
     
 

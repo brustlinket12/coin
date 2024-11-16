@@ -1,8 +1,29 @@
 import { Box, Button, TextField, Paper } from "@mui/material";
 import logo4 from "../assets/img/Logo4.json";
 import { Player } from "@lottiefiles/react-lottie-player";
+import { iniciarSesion } from "../Services/supabase.js";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
 
 function PaginaInicioSesion() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async () => {
+    const { data, error } = await iniciarSesion({ email, password });
+
+    if (error) {
+      setError(error); // Muestra el error si ocurre
+      console.log("Error al iniciar sesión:", error); // Log para ver el error
+    } else {
+      console.log("Usuario logueado: ", data); // Solo si la autenticación es exitosa
+      navigate("/monto"); // Redirige al dashboard si el login es exitoso
+    }
+  };
+
+
   return (
     <Box
       sx={{
@@ -13,19 +34,17 @@ function PaginaInicioSesion() {
         alignItems: "center",
         backgroundColor: "rgba(6, 6, 34, 10)",
         overflow: "hidden",
-        borderRadius: "16px", 
+        borderRadius: "16px",
       }}
     >
       <Box
         sx={{
-            border: "0.10px solid white",
-            borderRadius: "16px", 
+          border: "0.10px solid white",
+          borderRadius: "16px",
           display: "flex",
           alignItems: "flex-start",
           gap: "8px",
-          backgroundColor: "transparent"
-          
-        
+          backgroundColor: "transparent",
         }}
       >
         <Box>
@@ -43,16 +62,19 @@ function PaginaInicioSesion() {
             width: "400px",
             padding: "0.1px",
             backgroundColor: "transparent",
-           
           }}
         >
           <Box display="flex" flexDirection="column" alignItems="center">
-            <h1 style={{ color: "white" }}>Login</h1>
+            <h1 style={{ color: "white" }}>Iniciar Sesión</h1>
             <h3 style={{ color: "white" }}>Bienvenido a Coin Guard</h3>
 
+            {/* Campo para el email */}
             <TextField
               variant="standard"
               label="Usuario"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               InputProps={{
                 style: { color: "white" },
               }}
@@ -65,9 +87,14 @@ function PaginaInicioSesion() {
                 marginBottom: "36px",
               }}
             />
+
+          
             <TextField
               variant="standard"
-              label="Contrasena"
+              label="Contraseña"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               InputProps={{
                 style: { color: "white" },
               }}
@@ -77,8 +104,14 @@ function PaginaInicioSesion() {
               sx={{
                 "& .MuiInput-underline:after": { borderBottomColor: "black" },
                 backgroundColor: "transparent",
+                marginBottom: "36px",
               }}
             />
+
+           
+            {error && <div style={{ color: "red", marginBottom: "16px" }}>{error}</div>}
+
+        
             <Button
               variant="contained"
               size="small"
@@ -89,8 +122,9 @@ function PaginaInicioSesion() {
                 backgroundColor: "rgba(8, 28, 53, 1)",
                 boxShadow: "0px 4px 10px 0px rgba(255, 255, 255, 0.1)",
               }}
+              onClick={handleLogin}  
             >
-              iniciar sesión
+              Iniciar sesión
             </Button>
           </Box>
         </Paper>
@@ -98,4 +132,5 @@ function PaginaInicioSesion() {
     </Box>
   );
 }
+
 export default PaginaInicioSesion;

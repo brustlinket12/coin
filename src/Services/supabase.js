@@ -8,9 +8,37 @@ import { createClient } from '@supabase/supabase-js'
 
 );
 
-//funcion para meter datos
-export async function insertData(table, data) {
-    const { error } = await supabase.from(table).insert(data);
-    return !error;
+//funcion iniciar sesion
+
+export const registrarUsuario = async ({ email, password }) => {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+  });
+
+  if (error) {
+    return { error: error.message };
   }
-  
+
+  return { user: data.user };
+};
+
+
+
+export const iniciarSesion = async ({ email, password }) => {
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      return { error: error.message }; 
+    }
+
+    return { data }; 
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error);
+    return { error: 'Hubo un problema al intentar iniciar sesión. Intenta nuevamente.' };
+  }
+};

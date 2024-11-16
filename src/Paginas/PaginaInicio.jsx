@@ -2,8 +2,19 @@ import { Container, Box, Button } from "@mui/material";
 import logo1 from "../assets/img/logo1.png";
 import { Player } from "@lottiefiles/react-lottie-player";
 import logo2 from "../assets/img/logo2.json";
+import { useNavigate } from "react-router-dom";
 
 function PaginaInicio() {
+  const navigate = useNavigate();  // Inicializa el hook useNavigate
+
+  // Funciones para manejar los clics de los botones
+  const handleLoginClick = () => {
+    navigate("/inicioSesion");  // Redirige a la página de inicio sesión
+  };
+
+  const handleRegisterClick = () => {
+    navigate("/registrar");  // Redirige a la página de registro
+  };
   return (
     <Box display="flex" justifyContent="space-between" width="100%">
       {/*Izquierda */}
@@ -44,6 +55,7 @@ function PaginaInicio() {
               backgroundColor: "rgba(8, 28, 53, 1)",
               boxShadow: "0px 4px 10px 0px rgba(255, 255, 255, 0.1)",
             }}
+            onClick={handleLoginClick}
           >
             iniciar sesion
           </Button>
@@ -58,6 +70,7 @@ function PaginaInicio() {
               backgroundColor: "rgba(8, 28, 53, 1)",
               boxShadow: "0px 4px 10px 0px rgba(255, 255, 255, 0.1)",
             }}
+            onClick={handleRegisterClick}
           >
             registrarse
           </Button>
