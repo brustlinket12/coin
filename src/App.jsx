@@ -6,23 +6,26 @@ import PaginaInicioSesion from './Paginas/PaginaInicioSesion'; // Página de ini
 import PaginaInicioRegistrar from './Paginas/PaginaInicioRegistrar'; // Página de registro
 import PaginaDashboard from './Paginas/PaginaDashboard'; // Página del dashboard
 import PaginaMonto from './Paginas/PaginaMonto';
+import { AuthProvider } from './context/AuthContext';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Ruta inicial (por defecto) */}
-        <Route path="/" element={<PaginaInicio />} /> {/* Página de inicio como página por defecto */}
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Ruta inicial (por defecto) */}
+          <Route path="/" element={<PaginaInicio />} /> {/* Página de inicio como página por defecto */}
 
-        {/* Otras rutas */}
-        <Route path="/tutorial" element={<PaginaTutorial />} />
-        <Route path="/inicio-sesion" element={<PaginaInicioSesion />} />
-        <Route path="/registrar" element={<PaginaInicioRegistrar />} />
-        <Route path="/dashboard" element={<PaginaDashboard />} />
-        <Route path="/monto" element={<PaginaMonto />} />
-        {/* Agrega más rutas si es necesario */}
-      </Routes>
-    </Router>
+          {/* Otras rutas */}
+          <Route path="/tutorial" element={<PaginaTutorial />} />
+          <Route path="/inicio-sesion" element={<PaginaInicioSesion />} />
+          <Route path="/registrar" element={<PaginaInicioRegistrar />} />
+          <Route path="/dashboard" element={<PaginaDashboard />} />
+          <Route path="/monto" element={<PaginaMonto />} />
+          {/* Agrega más rutas si es necesario */}
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

@@ -1,65 +1,46 @@
 import { Container, Box, Button, TextField } from "@mui/material";
 import { Player } from "@lottiefiles/react-lottie-player";
 import logo3 from "../assets/img/logo3.json";
-import {supabase} from "../Services/supabase.js";
 import { useState, useEffect } from "react";
-
+import { supabase } from "../Services/supabase.js";
+import { useAuth } from "../context/AuthContext";
 
 function PaginaMonto() {
   const [cantidad, setCantidad] = useState(""); // Guardamos el valor de la cantidad en el estado
-  const [uuid, setUuid] = useState(""); // Estado para almacenar el uuid del usuario
+  const { user, loading } = useAuth(); // Usar el contexto de autenticación para obtener el usuario
 
-  // Recuperar la cantidad guardada en localStorage al cargar la página
   useEffect(() => {
     const cantidadGuardada = localStorage.getItem("cantidad");
     if (cantidadGuardada) {
-      setCantidad(cantidadGuardada); // Establecer el valor recuperado en el estado
+      setCantidad(cantidadGuardada);
     }
-
-    // Verificar la sesión activa y obtener el uuid del usuario autenticado
-    const fetchUser = async () => {
-      try {
-        const { data: session, error } = await supabase.auth.getSession();
-
-        // Verificar si hay algún error al obtener la sesión
-        if (error) {
-          console.error("Error al obtener la sesión:", error);
-          return;
-        }
-
-        if (session && session.user) {
-          setUuid(session.user.id); // Guardamos el uuid del usuario activo
-        } else {
-          console.log("No hay sesión activa.");
-        }
-      } catch (error) {
-        console.error("Error al intentar obtener la sesión:", error);
-      }
-    };
-
-    fetchUser();
-  }, []); // Ejecutar solo al cargar la página
+  }, []);
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevenir el comportamiento predeterminado del formulario
+    e.preventDefault();
 
     if (!cantidad) {
       alert("Por favor, ingresa un valor para la cantidad.");
       return;
     }
 
-    if (!uuid) {
+    if (loading) {
+      alert("Verificando autenticación...");
+      return;
+    }
+
+    if (!user) {
       alert("Usuario no autenticado.");
       return;
     }
 
     try {
       const { data, error } = await supabase
-        .from("monto") // Nombre de la tabla
+        .from("monto")
         .insert([
           {
-            cantidad: cantidad, // Insertar solo la cantidad en la base de datos
-            uuid: uuid, // Asociar el uuid del usuario
+            cantidad: cantidad,
+            uuid: user.id, // Usar el id del usuario autenticado
           },
         ]);
 
@@ -67,17 +48,17 @@ function PaginaMonto() {
         console.error("Error al insertar monto:", error);
       } else {
         console.log("Monto insertado:", data);
-
-        // Guardar la cantidad en localStorage para que persista
         localStorage.setItem("cantidad", cantidad);
-
-        // Limpiar el campo después de insertar
         setCantidad("");
       }
     } catch (error) {
       console.error("Error al insertar en Supabase:", error);
     }
   };
+
+  if (loading) {
+    return <div>Cargando...</div>; // Mostrar un mensaje de carga mientras se verifica la sesión
+  }
 
   return (
     <Box display="flex" justifyContent="space-between" width="100%">
@@ -109,14 +90,14 @@ function PaginaMonto() {
               variant="standard"
               focused
               value={cantidad}
-              onChange={(e) => setCantidad(e.target.value)} // Actualizar el estado con el valor ingresado
+              onChange={(e) => setCantidad(e.target.value)}
               InputProps={{
                 style: { color: "white" },
               }}
               sx={{
                 "& .MuiInput-underline:after": { borderBottomColor: "white" },
                 backgroundColor: "transparent",
-                marginBottom: "20px", // Asegura que haya espacio entre la línea y el botón
+                marginBottom: "20px",
               }}
               required
             />
@@ -136,7 +117,7 @@ function PaginaMonto() {
           width: "150vh",
           margin: "0",
           backgroundColor: "rgba(12, 13, 22, 1)",
-          color : 'white'
+          color: 'white',
         }}
       >
         <Box
