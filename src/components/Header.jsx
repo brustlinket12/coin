@@ -11,8 +11,10 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
+
 // Importa la imagen personalizada
 import CustomLogo from '/src/assets/img/logo1.png'; // Ajusta la ruta según la ubicación de tu imagen
+import Navbar from './SideNavOpener';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
@@ -38,10 +40,12 @@ function Header() {
     return (
         <AppBar position="fixed" 
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, 
-            backgroundColor: '#294067'
+            backgroundColor: '#294067',
+            color : 'white'
         }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
+                    <Navbar/>
                     {/* Reemplaza el AdbIcon con la imagen personalizada */}
                     <Box
                         component="img"
@@ -60,7 +64,7 @@ function Header() {
                             fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
-                            color: 'inherit',
+                            color: '#FFFFFF',
                             textDecoration: 'none',
                         }}
                     >

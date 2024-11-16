@@ -136,6 +136,7 @@ function PaginaMonto() {
           width: "150vh",
           margin: "0",
           backgroundColor: "rgba(12, 13, 22, 1)",
+          color : 'white'
         }}
       >
         <Box
