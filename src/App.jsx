@@ -5,6 +5,7 @@ import PaginaTutorial from './Paginas/PaginaMonto'; // Página de tutorial
 import PaginaInicioSesion from './Paginas/PaginaInicioSesion'; // Página de inicio de sesión
 import PaginaInicioRegistrar from './Paginas/PaginaInicioRegistrar'; // Página de registro
 import PaginaDashboard from './Paginas/PaginaDashboard'; // Página del dashboard
+import PaginaMonto from './Paginas/PaginaMonto';
 
 function App() {
   return (
