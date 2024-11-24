@@ -5,6 +5,7 @@ import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import PropTypes from 'prop-types';  // Importa PropTypes
 import PaginaIngresos from '../Paginas/PaginaIngresos';
+import PaginaDashboard from '../Paginas/PaginaDashboard';
 import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 225;
@@ -16,6 +17,10 @@ export default function SideNav({ open, onClose }) {
     const handleIngreso = () =>{
         navigate("/ingresos")
     };
+
+    const handleDashboard = () =>{
+        navigate("/dashboard")
+    }
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -44,6 +49,7 @@ export default function SideNav({ open, onClose }) {
                         
                         onClick={() =>{
                             if(text === "Ingresos") handleIngreso();
+                            if(text === "Resúmen") handleDashboard();
                         }}
 
                         >
