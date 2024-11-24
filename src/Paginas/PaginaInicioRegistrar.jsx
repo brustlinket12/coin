@@ -3,47 +3,52 @@ import logo4 from "../assets/img/Logo4.json";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { useState } from "react";
 import { registrarUsuario } from "../Services/supabase.js";
-
+import { useNavigate } from 'react-router-dom';
 
 function PaginaInicioRegistrar() {
-  const [error, setError] = useState('');
-  const [values, setValues] = useState({
-    email: "",
-    password: "",
+ // Importa useNavigate de react-router-dom
+
+const [error, setError] = useState('');
+const [values, setValues] = useState({
+  email: "",
+  password: "",
+});
+
+const navigate = useNavigate(); // Inicializa el hook de navegación
+
+const handleChange = (e) => {
+  setValues({
+    ...values,
+    [e.target.name]: e.target.value,
+  });
+};
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!values.email || !values.password) {
+    setError("Correo y Contraseña son obligatorios");
+    console.log("No puedes dejar los campos vacíos.");
+    return;
+  }
+
+  setError("");
+
+  // Llamar a la función registrarUsuario
+  const result = await registrarUsuario({
+    email: values.email,
+    password: values.password,
   });
 
-  const handleChange = (e) => {
-    setValues({
-      ...values,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-  
-    if (!values.email || !values.password) {
-      setError("Correo y Contraseña son obligatorios");
-      console.log("No puedes dejar los campos vacíos.");
-      return;
-    }
-  
-    setError("");
-  
-    // Llamar a la función registrarUsuario
-    const result = await registrarUsuario({
-      email: values.email,
-      password: values.password,
-    });
-  
-    if (result.error) {
-      console.log("Error al registrar usuario:", result.error);
-      setError(result.error);
-    } else {
-      console.log("Usuario registrado exitosamente:", result.user);
-      setError("Usuario registrado correctamente. Verifica tu correo.");
-    }
-  };
+  if (result.error) {
+    console.log("Error al registrar usuario:", result.error);
+    setError(result.error);
+  } else {
+    console.log("Usuario registrado exitosamente:", result.user);
+    setError("Usuario registrado correctamente. Verifica tu correo.");
+    navigate('/transicion');  // Cambia '/pagina-de-bienvenida' por la ruta que desees
+  }
+};
 
   return (
     <Box

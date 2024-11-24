@@ -4,6 +4,7 @@ import { Player } from "@lottiefiles/react-lottie-player";
 import { iniciarSesion } from "../Services/supabase.js";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; 
+import { supabase } from "../Services/supabase.js";
 
 function PaginaInicioSesion() {
   const [email, setEmail] = useState("");
@@ -12,14 +13,38 @@ function PaginaInicioSesion() {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    const { data, error } = await iniciarSesion({ email, password });
+    try {
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (error) {
-      setError(error); // Muestra el error si ocurre
-      console.log("Error al iniciar sesión:", error); // Log para ver el error
-    } else {
-      console.log("Usuario logueado: ", data); // Solo si la autenticación es exitosa
-      navigate("/monto"); // Redirige al dashboard si el login es exitoso
+      if (authError) {
+        setError(authError.message);
+        return;
+      }
+
+      // Después de iniciar sesión, verifica si ya tiene datos en la base
+      const { data: montoData, error: montoError } = await supabase
+        .from("monto")
+        .select("cantidad")
+        .eq("uuid", data.user.id) // Usamos el UUID del usuario autenticado
+        .single(); // Solo necesitamos un registro
+
+      if (montoError) {
+        setError(montoError.message);
+        return;
+      }
+
+      // Si el usuario tiene datos en la tabla "monto", redirige a otro lugar
+      if (montoData) {
+        navigate("/dashboard"); // Cambia "/otro-lugar" por la ruta deseada
+      } else {
+        navigate("/monto"); // Si no tiene datos, lo redirigimos a la página de monto
+      }
+    } catch (error) {
+      setError("Hubo un error al intentar iniciar sesión");
+      console.error("Error en inicio de sesión:", error);
     }
   };
 

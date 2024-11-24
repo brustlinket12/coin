@@ -25,7 +25,11 @@ import SavingsIcon from '@mui/icons-material/Savings';
 import { LineChart } from "@mui/x-charts";
 import { useState } from "react";
 import { Close } from "@mui/icons-material";
-
+import MostrarCantidad from "../Funciones/MostrarCantidad";
+import MostrarUltimoIngreso from "../Funciones/MostrarUltimoIngreso";
+import MostrarUltimoEgreso from "../Funciones/MostrarUltimoEgreso";
+import { useAuth } from "../context/AuthContext"; // Asegúrate de que la ruta del contexto sea correcta
+import { supabase } from "../Services/supabase.js";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: '#20314f', // #0D1127
@@ -50,14 +54,95 @@ const StyledCard = styled(Card)(({ theme }) => ({
 
 
 function PaginaDashboard() {
-
+    const { user } = useAuth(); // Obtener el usuario autenticado
     const [open, setOpen] = useState(false);
-    const openDialog = () => {
-        setOpen(true);
-    }
-    const closeDialog = () => {
-        setOpen(false);
-    }
+    const [cantidad, setCantidad] = useState(""); // Estado para la cantidad ingresada
+    const [nombre, setNombre] = useState(""); // Estado para el nombre de la transacción
+  
+    // Abre el diálogo
+    const openDialog = () => setOpen(true);
+  
+    // Cierra el diálogo
+    const closeDialog = () => setOpen(false);
+  
+    // Función para insertar un ingreso
+    const handleIngreso = async () => {
+      if (!user) {
+        alert("Debes estar autenticado para realizar un ingreso.");
+        return;
+      }
+  
+      if (!nombre || cantidad <= 0) {
+        alert("Por favor, ingresa un nombre válido y una cantidad mayor a 0.");
+        return;
+      }
+  
+      try {
+        const { data, error } = await supabase
+          .from("ingreso") // Tabla ingreso
+          .insert([
+            {
+              cantidad: parseFloat(cantidad),
+              uuid: user.id, // Usamos el UUID del usuario autenticado
+              nombre: nombre, // Agregamos el nombre de la transacción
+              creado_en: new Date(),
+              actualizado_en: new Date(),
+            },
+          ]);
+  
+        if (error) {
+          console.error("Error al guardar el ingreso:", error.message);
+          alert("Error al guardar el ingreso.");
+        } else {
+          console.log("Ingreso guardado:", data);
+          alert("Ingreso guardado correctamente.");
+        }
+      } catch (error) {
+        console.error("Error inesperado:", error);
+        alert("Hubo un error al guardar el ingreso.");
+      }
+      setOpen(false); // Cierra el diálogo después de insertar
+    };
+  
+    // Función para insertar un egreso
+    const handleEgreso = async () => {
+      if (!user) {
+        alert("Debes estar autenticado para realizar un egreso.");
+        return;
+      }
+  
+      if (!nombre || cantidad <= 0) {
+        alert("Por favor, ingresa un nombre válido y una cantidad mayor a 0.");
+        return;
+      }
+  
+      try {
+        const { data, error } = await supabase
+          .from("egreso") // Tabla egreso
+          .insert([
+            {
+              cantidad: parseFloat(cantidad),
+              uuid: user.id, // Usamos el UUID del usuario autenticado
+              nombre: nombre, // Agregamos el nombre de la transacción
+              creado_en: new Date(),
+              actualizado_en: new Date(),
+            },
+          ]);
+  
+        if (error) {
+          console.error("Error al guardar el egreso:", error.message);
+          alert("Error al guardar el egreso.");
+        } else {
+          console.log("Egreso guardado:", data);
+          alert("Egreso guardado correctamente.");
+        }
+      } catch (error) {
+        console.error("Error inesperado:", error);
+        alert("Hubo un error al guardar el egreso.");
+      }
+      setOpen(false); // Cierra el diálogo después de insertar
+    };
+  
 
 
     return (
@@ -79,11 +164,10 @@ function PaginaDashboard() {
                                     <CardContent>  
                                         <Typography gutterBottom variant="h5" component="div">
                                         <SavingsIcon style={{float:'right', color:"#5BF561"}}/>
-                                            Monto actual
+                                            
                                         </Typography>
                                         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                            Aqui va el valor de la plata del usuario
-                                            se debe ir actualizando a medida q hayan ingresos o egresos
+                                        <MostrarCantidad />
                                         </Typography>
                                     </CardContent>
                                 </StyledCard>
@@ -105,10 +189,10 @@ function PaginaDashboard() {
                                     <CardContent>  
                                         <Typography gutterBottom variant="h5" component="div">
                                         <ArrowCircleUpIcon style={{float:'right', color:"#5BF561"}} />
-                                            Igresos
+                                        {/*ingreso*/}
                                         </Typography>
                                         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                            total: 1200$
+                                        <MostrarUltimoIngreso />
                                         </Typography>
                                     </CardContent>
                                 </Card>
@@ -124,10 +208,9 @@ function PaginaDashboard() {
                                     <CardContent>  
                                         <Typography gutterBottom variant="h5" component="div">
                                         <ArrowCircleDownIcon style={{float:'right', color:"#f55b5b"}} />
-                                            Egresos
                                         </Typography>
                                         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                            total: 150
+                                        <MostrarUltimoEgreso />
                                         </Typography>
                                     </CardContent>
                                 </Card>
@@ -154,42 +237,58 @@ function PaginaDashboard() {
                                                 </DialogTitle>
                                                 <DialogContent dividers>
                                                     <Stack spacing={2} margin={2}>
+                                                       
                                                         <TextField 
-                                                        variant="outlined" 
-                                                        label="Nombre" 
+
+                                                         variant="outlined"
+                                                         label="Nombre de la transacción"
+                                                         value={nombre}
+                                                         onChange={(e) => setNombre(e.target.value)}
                                                         ></TextField>
 
                                                         <TextField 
-                                                        variant="outlined" 
-                                                        label="Cantidad" 
-                                                        type="number"
-                                                        inputProps={{min:"0", step:"0.01"}}
-                                                        onChange={(e) => {
-                                                            const value = parseFloat(e.target.value);
-                                                            if (value < 0) e.target.value = ""; // resetea si es negativo
-                                                        }}
+                                                          variant="outlined"
+                                                          label="Cantidad"
+                                                          type="number"
+                                                          inputProps={{ min: "0", step: "0.01" }}
+                                                          value={cantidad}
+                                                          onChange={(e) => setCantidad(e.target.value)}
                                                         ></TextField>
 
-                                                        <TextField 
-                                                        variant="outlined" 
-                                                        label="Fecha"
-                                                        type="date"
-                                                        InputLabelProps={{
-                                                            shrink: true,
-                                                        }}
-                                                        ></TextField>
+                                                       
                                                     </Stack>
                                                 </DialogContent>
                                                 <DialogActions>
-                                                    <Button variant="contained" color="success" onClick={closeDialog}>Ingreso</Button> {/* este boton debe enviar info a la base de datos */}
-                                                    <Button variant="contained" color="error" onClick={closeDialog}>Egreso</Button> {/* este boton debe enviar info a la base de datos */}
-                                                </DialogActions>
+                                                <Button
+  variant="contained"
+  color="success"
+  onClick={async () => {
+    await handleIngreso(); // Espera a que se complete el ingreso
+    window.location.reload(); // Recarga la página después de insertar el ingreso
+  }}
+  disabled={!cantidad || cantidad <= 0 || !nombre} // Deshabilitar si no hay cantidad válida o nombre
+>
+  Ingreso
+</Button>
+
+<Button
+  variant="contained"
+  color="error"
+  onClick={async () => {
+    await handleEgreso(); // Espera a que se complete el egreso
+    window.location.reload(); // Recarga la página después de insertar el egreso
+  }}
+  disabled={!cantidad || cantidad <= 0 || !nombre} // Deshabilitar si no hay cantidad válida o nombre
+>
+  Egreso
+</Button>
+
+                  </DialogActions>
                                             </Dialog>
 
                                         </Stack>  
                                         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                            +500$ de algo,
-                                            -120$ de otra cosa
+                                            
                                         </Typography>
                                     </CardContent>
                                 </StyledCard>

@@ -21,7 +21,6 @@ function PaginaInicio() {
       <Container
         maxWidth="xl"
         style={{
-          border: "0.1px  solid white",
           padding: "16px",
           height: "800px",
           width: "500px",
