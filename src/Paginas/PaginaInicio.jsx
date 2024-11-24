@@ -34,6 +34,9 @@ function PaginaInicio() {
           height="100vh"
           flexDirection="column"
         >
+          <div>
+             <h1>CoinGuard</h1>
+          </div>
           <img
             src={logo1}
             alt="Descripción del logo"
@@ -74,14 +77,14 @@ function PaginaInicio() {
             registrarse
           </Button>
           <Button size="small" style={{ color: "white" }}>
-            olvide mi contraseña
+          
           </Button>
         </Box>
       </Container>
 
       {/* Derecho */}
       <Container
-        maxWidth="xl"
+        maxWidth="s"
         style={{
           padding: "16px",
           height: "800px",
@@ -104,7 +107,7 @@ function PaginaInicio() {
           />
 
           <h3>
-            ¡En Coin Guard, aprenderás a tomar el control de tus finanzas de
+            ¡En CoinGuard, aprenderás a tomar el control de tus finanzas de
             manera sencilla y efectiva!
           </h3>
         </Box>
