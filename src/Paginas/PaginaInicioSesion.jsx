@@ -1,18 +1,23 @@
 import { Box, Button, TextField, Paper } from "@mui/material";
 import logo4 from "../assets/img/Logo4.json";
 import { Player } from "@lottiefiles/react-lottie-player";
-import { iniciarSesion } from "../Services/supabase.js";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../Services/supabase.js";
-
+ 
 function PaginaInicioSesion() {
-  const [email, setEmail] = useState("");
+const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    // Validación básica de campos
+    if (!email || !password) {
+      setError("Por favor, ingresa tanto el email como la contraseña.");
+      return;
+    }
+
     try {
       const { data, error: authError } = await supabase.auth.signInWithPassword({
         email,
@@ -24,31 +29,44 @@ function PaginaInicioSesion() {
         return;
       }
 
-      // Después de iniciar sesión, verifica si ya tiene datos en la base
+      // Verifica si el usuario tiene datos en la tabla "monto"
       const { data: montoData, error: montoError } = await supabase
         .from("monto")
         .select("cantidad")
-        .eq("uuid", data.user.id) // Usamos el UUID del usuario autenticado
-        .single(); // Solo necesitamos un registro
+        .eq("uuid", data.user.id)
+        .limit(1); // Aseguramos que solo se reciba un registro
 
       if (montoError) {
         setError(montoError.message);
         return;
       }
 
-      // Si el usuario tiene datos en la tabla "monto", redirige a otro lugar
-      if (montoData) {
-        navigate("/dashboard"); // Cambia "/otro-lugar" por la ruta deseada
-      } else {
-        navigate("/monto"); // Si no tiene datos, lo redirigimos a la página de monto
+      // Verificar si el usuario tiene registros en la tabla "ingreso"
+      const { data: ingresosData, error: ingresosError } = await supabase
+        .from("ingreso")
+        .select("id")
+        .eq("uuid", data.user.id)
+        .limit(1); // Verifica si existe al menos un ingreso
+
+      if (ingresosError) {
+        setError(ingresosError.message);
+        return;
       }
+
+      // Si no tiene registros ni en "monto" ni en "ingreso", lo redirige al tutorial
+      if (!montoData || montoData.length === 0 || !ingresosData || ingresosData.length === 0) {
+        // No hay datos en "monto" ni en "ingreso", redirige al tutorial
+        navigate("/tutorial");
+      } else {
+        // Si tiene datos, redirige al dashboard
+        navigate("/dashboard");
+      }
+      
     } catch (error) {
-      setError("Hubo un error al intentar iniciar sesión");
+      setError("Hubo un error al intentar iniciar sesión.");
       console.error("Error en inicio de sesión:", error);
     }
-  };
-
-
+  }
   return (
     <Box
       sx={{
@@ -113,7 +131,7 @@ function PaginaInicioSesion() {
               }}
             />
 
-          
+            {/* Campo para la contraseña */}
             <TextField
               variant="standard"
               label="Contraseña"
@@ -133,10 +151,10 @@ function PaginaInicioSesion() {
               }}
             />
 
-           
+            {/* Muestra el error si existe */}
             {error && <div style={{ color: "red", marginBottom: "16px" }}>{error}</div>}
 
-        
+            {/* Botón de inicio de sesión */}
             <Button
               variant="contained"
               size="small"
@@ -147,7 +165,7 @@ function PaginaInicioSesion() {
                 backgroundColor: "rgba(8, 28, 53, 1)",
                 boxShadow: "0px 4px 10px 0px rgba(255, 255, 255, 0.1)",
               }}
-              onClick={handleLogin}  
+              onClick={handleLogin}
             >
               Iniciar sesión
             </Button>
