@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';  // Importa PropTypes
 import PaginaIngresos from '../Paginas/PaginaIngresos';
 import PaginaDashboard from '../Paginas/PaginaDashboard';
 import PaginaEgresos from '../Paginas/PaginaEgresos';
+import Paginarecordatorios from '../Paginas/Paginarecordatorios';
 import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 225;
@@ -25,6 +26,10 @@ export default function SideNav({ open, onClose }) {
 
     const handleEgreso = () =>{
         navigate("/egresos")
+    }
+
+    const handleRecordatorio = () =>{
+        navigate("/recordatorios")
     }
 
     return (
@@ -56,6 +61,7 @@ export default function SideNav({ open, onClose }) {
                             if(text === "Ingresos") handleIngreso();
                             if(text === "Resúmen") handleDashboard();
                             if(text === "Egresos") handleEgreso();
+                            if(text === "Recordatorios") handleRecordatorio();
                         }}
 
                         >
