@@ -6,6 +6,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import PropTypes from 'prop-types';  // Importa PropTypes
 import PaginaIngresos from '../Paginas/PaginaIngresos';
 import PaginaDashboard from '../Paginas/PaginaDashboard';
+import PaginaEgresos from '../Paginas/PaginaEgresos';
 import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 225;
@@ -20,6 +21,10 @@ export default function SideNav({ open, onClose }) {
 
     const handleDashboard = () =>{
         navigate("/dashboard")
+    }
+
+    const handleEgreso = () =>{
+        navigate("/egresos")
     }
 
     return (
@@ -50,6 +55,7 @@ export default function SideNav({ open, onClose }) {
                         onClick={() =>{
                             if(text === "Ingresos") handleIngreso();
                             if(text === "Resúmen") handleDashboard();
+                            if(text === "Egresos") handleEgreso();
                         }}
 
                         >
