@@ -8,6 +8,7 @@ import PaginaMonto from './Paginas/PaginaMonto';
 import PaginaTransicion from './Paginas/paginatransicion';
 import PaginaIngresos from './Paginas/PaginaIngresos';
 import PaginaEgresos from './Paginas/PaginaEgresos';
+import Paginarecordatorios from './Paginas/Paginarecordatorios';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path="/transicion" element={<PaginaTransicion />} />
           <Route path="/ingresos" element={<PaginaIngresos />} />
           <Route path="/egresos" element={<PaginaEgresos />} />
+          <Route path="/recordatorios" element={<Paginarecordatorios />} />
           {/* Agrega más rutas si es necesario */}
         </Routes>
       </Router>
