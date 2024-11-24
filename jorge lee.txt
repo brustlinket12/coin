@@ -1,0 +1,124 @@
+SAN PEDRO ME DIJO LO SIGUIENTE:
+
+
+Para recibir los ingresos almacenados en la base de datos de Supabase y mostrarlos en la página PaginaIngresos, 
+puedes usar la función useEffect para cargar los datos desde la base de datos al montar el componente. 
+Aquí hay una guía paso a paso para implementar esto:
+
+Actualización de PaginaIngresos:
+
+    Configurar Supabase: Asegúrate de importar tu configuración de Supabase.
+    Recuperar Datos: Utiliza el método supabase.from("ingreso").select() para obtener los ingresos.
+    Actualizar Estado: Guarda los datos recuperados en el estado ingresos.
+
+Aquí está el código actualizado de PaginaIngresos:
+
+import React, { useState, useEffect } from "react";
+import SideNav from "../components/SideNav";
+import Header from "../components/Header";
+import { Box } from "@mui/material";
+import { styled } from '@mui/material/styles';
+import Grid from "@mui/material/Grid2";
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import { supabase } from "../Services/supabase.js"; // Asegúrate de importar correctamente
+
+const StyledCard = styled(Card)(({ theme }) => ({
+    backgroundColor: '#294067', 
+    color: '#FFFFFF',
+    padding: theme.spacing(2),
+    '& .MuiTypography-root': {
+        color: '#FFFFFF',
+    },
+    width: '100%',
+    boxSizing: 'border-box',
+}));
+
+function PaginaIngresos() {
+    const [ingresos, setIngresos] = useState([]);
+    const [loading, setLoading] = useState(true); // Para mostrar un indicador de carga
+
+    useEffect(() => {
+        const fetchIngresos = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from("ingreso") // Nombre de la tabla
+                    .select("id, nombre, cantidad, creado_en") // Selecciona las columnas necesarias
+                    .order("creado_en", { ascending: false }); // Ordenar por fecha de creación
+
+                if (error) throw error;
+
+                setIngresos(data || []); // Actualiza el estado con los ingresos obtenidos
+            } catch (error) {
+                console.error("Error al cargar los ingresos:", error.message);
+            } finally {
+                setLoading(false); // Detén el indicador de carga
+            }
+        };
+
+        fetchIngresos();
+    }, []); // Ejecutar solo una vez al montar el componente
+
+    return (
+        <>
+            <Header />
+            <Box height={30} />
+            <Box sx={{ display: "flex", height: '100vh', width: '100vw', backgroundColor: '#0D1127' }}>
+                <SideNav />
+                <Box 
+                    component="main" 
+                    sx={{ 
+                        flexGrow: 1, 
+                        p: 8, 
+                        height: '100%', 
+                        overflow: "auto", 
+                        width: '100%'
+                    }}
+                >
+                    {loading ? (
+                        <p style={{ color: "white" }}>Cargando ingresos...</p>
+                    ) : (
+                        <Grid container direction="column" spacing={2} sx={{ width: '100%' }}>
+                            {ingresos.length > 0 ? (
+                                ingresos.map((ingreso) => (
+                                    <Grid item key={ingreso.id}>
+                                        <StyledCard>
+                                            <CardContent>
+                                                <h2>{ingreso.nombre}</h2>
+                                                <p>Cantidad: ${ingreso.cantidad.toFixed(2)}</p>
+                                                <p>Fecha: {new Date(ingreso.creado_en).toLocaleString()}</p>
+                                            </CardContent>
+                                        </StyledCard>
+                                    </Grid>
+                                ))
+                            ) : (
+                                <p style={{ color: "white" }}>No hay ingresos registrados.</p>
+                            )}
+                        </Grid>
+                    )}
+                </Box>
+            </Box>
+        </>
+    );
+}
+
+export default PaginaIngresos;
+
+Explicación del código:
+
+    useEffect: Llama a fetchIngresos una vez que se monta el componente.
+    Recuperación de datos: La consulta supabase.from("ingreso").select() obtiene los ingresos desde la tabla ingreso.
+    Ordenar por fecha: Ordena los resultados por la columna creado_en en orden descendente.
+    Indicador de carga: Mientras los datos se están cargando, muestra un mensaje como "Cargando ingresos...".
+    Mostrar datos: Si hay datos, se renderizan en tarjetas. Si no, muestra un mensaje indicando que no hay ingresos registrados.
+
+Resultado:
+En la página PaginaIngresos, aparecerá una lista de ingresos con su nombre, cantidad y fecha de creación. 
+Si no hay ingresos, mostrará un mensaje informativo. Si los datos tardan en llegar, el usuario verá un indicador de carga.
+
+
+
+
+
+SI TE SIRVE, PASAS LO MISMO A LA DE EGRESOS, PQ SON LA MISMA VAINA NAMA
+QUE INGRESO LO CAMBIE POR EGRESO Y AJÁ
