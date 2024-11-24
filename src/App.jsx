@@ -7,6 +7,7 @@ import PaginaInicioRegistrar from './Paginas/PaginaInicioRegistrar'; // Página 
 import PaginaDashboard from './Paginas/PaginaDashboard'; // Página del dashboard
 import PaginaMonto from './Paginas/PaginaMonto';
 import PaginaTransicion from './Paginas/paginatransicion';
+import PaginaIngresos from './Paginas/PaginaIngresos';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/dashboard" element={<PaginaDashboard />} />
           <Route path="/monto" element={<PaginaMonto />} />
           <Route path="/transicion" element={<PaginaTransicion />} />
+          <Route path="/ingresos" element={<PaginaIngresos />} />
           {/* Agrega más rutas si es necesario */}
         </Routes>
       </Router>
