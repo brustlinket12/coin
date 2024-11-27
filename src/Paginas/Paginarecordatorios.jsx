@@ -1,122 +1,220 @@
-import { Container, Box, Button } from "@mui/material";
-import { Typography } from "@mui/material";
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import Grid from "@mui/material/Grid2";
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Stack from '@mui/material/Stack';
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import TextField from '@mui/material/TextField';
-import IconButton from "@mui/material/IconButton";
-import QueueIcon from '@mui/icons-material/Queue';import { useState } from "react";
+import { Container, Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Stack, Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { Close } from "@mui/icons-material";
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: '#20314f', // #0D1127
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-  ...theme.applyStyles('dark', {
-      backgroundColor: '#060618',
-  }),
-}));
-
-const StyledCard = styled(Card)(({ theme }) => ({
-  backgroundColor: '#294067', 
-  color: '#FFFFFF', // color del texto
-  padding: theme.spacing(2),
-  '& .MuiTypography-root': {
-      color: '#FFFFFF', // ajusta el color de todos los textos dentro del Card
-  },
-}));
-
+import { useState } from "react";
+import { Player } from "@lottiefiles/react-lottie-player";
+import recordatorio_animation from "../assets/img/recordatorio_animation.json";
+import QueueIcon from '@mui/icons-material/Queue';
+import CheckIcon from '@mui/icons-material/Check';  // Icono de "hecho" (gancho)
 
 function Recordatorios() {
-  
-    const [open, setOpen] = useState(false);
-    const openDialog = () => {
-        setOpen(true);
-    }
-    const closeDialog = () => {
-        setOpen(false);
-    }
+  const [open, setOpen] = useState(false);
+  const [recordatorios, setRecordatorios] = useState([]); // Estado para almacenar los recordatorios
+  const [titulo, setTitulo] = useState("");
+  const [descripcion, setDescripcion] = useState("");
+  const [monto, setMonto] = useState("");
+  const [fecha, setFecha] = useState("");
+
+  const openDialog = () => {
+    setOpen(true);
+  };
+
+  const closeDialog = () => {
+    setOpen(false);
+  };
+
+  const handleSaveRecordatorio = () => {
+    // Guardar los datos del recordatorio en el estado
+    const nuevoRecordatorio = {
+      titulo,
+      descripcion,
+      monto,
+      fecha,
+    };
+
+    setRecordatorios([...recordatorios, nuevoRecordatorio]);
+    closeDialog(); // Cerrar el diálogo después de guardar
+  };
+
+  const handleDeleteRecordatorio = (index) => {
+    // Eliminar el recordatorio usando el índice
+    const nuevosRecordatorios = recordatorios.filter((_, i) => i !== index);
+    setRecordatorios(nuevosRecordatorios);
+  };
+
   return (
-    <Box 
+    <Container>
+      <Box
         sx={{
-            height: "100vh",
-            width: "100vw",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "rgba(6, 6, 34, 10)",
-            overflow: "hidden",
-            borderRadius: "16px",
+          height: "100vh",
+          width: "100vw",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "rgba(6, 6, 34, 10)",
+          overflow: "hidden",
+          borderRadius: "16px",
+          position: "relative",
         }}
-    >
-      <Grid size={5}
       >
-         <Item>
-             <StyledCard sx={{ maxWidth: 700, height: 100 }}>
-                  <CardContent>
-                      <Stack direction={"row"} spacing={12}>
-                            <Typography gutterBottom variant="h5" component="div">
-                                                Añadir Recordatorio
-                            </Typography>
-                            </Stack>  
-                                        <IconButton style={{backgroundColor:' #808080', color:"#FFFFFF"}} onClick={openDialog}> <QueueIcon ></QueueIcon > </IconButton>
-                                            {/* <Button variant='contained' onClick={openDialog}> + </Button> */}
-                                            <Dialog open={open} onClose={closeDialog} fullWidth aria-labelledby='dialog-title' >
-                                                <DialogTitle> Añadir Recordatorio
-                                                <IconButton style={{ color:'#f55b5b'}} onClick={closeDialog}> <Close></Close> </IconButton>
-                                                </DialogTitle>
-                                                <DialogContent dividers>
-                                                    <Stack spacing={2} margin={2}>
-                                                        <TextField 
-                                                        variant="outlined" 
-                                                        label="Título" 
-                                                        ></TextField>
+        {/* Botón para abrir el dialog */}
+        <IconButton
+          style={{
+            position: "absolute",
+            top: "20px",
+            right: "20px",
+            backgroundColor: '#808080',
+            color: "#FFFFFF"
+          }}
+          onClick={openDialog}
+        >
+          <QueueIcon />
+        </IconButton>
 
-                                                        <TextField 
-                                                        variant="outlined" 
-                                                        label="Descripción del Recordatorio"
-                                                        ></TextField>
+        {/* Mostrar la animación solo si no hay recordatorios */}
+        {recordatorios.length === 0 && (
+          <>
+            <Player
+              autoplay
+              loop
+              src={recordatorio_animation}
+              style={{ height: "100%", width: "350px" }}
+            />
+            <h2>¿Tienes que realizar algún pago en próximas fechas?</h2>
+            <h2>¡Crea un recordatorio!</h2>
+          </>
+        )}
 
-                                                        <TextField 
-                                                        variant="outlined" 
-                                                        label="Monto" 
-                                                        type="number"
-                                                        inputProps={{min:"0", step:"0.01"}}
-                                                        onChange={(e) => {
-                                                            const value = parseFloat(e.target.value);
-                                                            if (value < 0) e.target.value = ""; // resetea si es negativo
-                                                        }}
-                                                        ></TextField>
+        {/* Mostrar los recordatorios si existen */}
+        {recordatorios.length > 0 && (
+          <div>
+            <h3>Recordatorios:</h3>
+            {/* Mostrar cada recordatorio en una barra con la opción de "hecho" */}
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+              {recordatorios.map((recordatorio, index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    marginBottom: '20px',
+                    width: '100%',
+                    maxWidth: '800px',
+                    backgroundColor: '#f0f0f0', // Fondo gris
+                    borderRadius: '8px', // Bordes redondeados
+                    padding: '10px', // Espaciado interior
+                    display: 'flex', // Alinear el título y el chip
+                    flexDirection: 'column', // Columna para tener la tabla arriba
+                    alignItems: 'flex-start', // Alineación izquierda para la tabla
+                    justifyContent: 'space-between', // Espaciado entre el título y la tabla
+                  }}
+                >
+                  {/* Título del recordatorio */}
+                  <div>
+                    <p style={{ color: 'black' }}><strong>Titulo:</strong> {recordatorio.titulo}</p>
+                    </div>
 
-                                                        <TextField 
-                                                        variant="outlined" 
-                                                        label="Fecha"
-                                                        type="date"
-                                                        InputLabelProps={{
-                                                            shrink: true,
-                                                        }}
-                                                        ></TextField>
-                                                    </Stack>
-                                                </DialogContent>
-                                                <DialogActions>
-                                                    <Button variant="contained" color="success" onClick={closeDialog}>Añadir</Button> {/* este boton debe enviar info a la base de datos */}
-                                                    <Button variant="contained" color="error" onClick={closeDialog}>Egreso</Button> {/* este boton debe enviar info a la base de datos */}
-                                                </DialogActions>
-                                            </Dialog>
-                                    </CardContent>
-                                </StyledCard>
-                            </Item>
-                        </Grid>
-    </Box>
+
+
+                  {/* Tabla con los datos del recordatorio */}
+                  <TableContainer>
+                    <Table sx={{ minWidth: 650 }} aria-label="recordatorio-table">
+                      <TableHead>
+                        <TableRow>
+                          <TableCell><strong>Descripción</strong></TableCell>
+                          <TableCell><strong>Monto</strong></TableCell>
+                          <TableCell><strong>Fecha</strong></TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell>{recordatorio.descripcion}</TableCell>
+                          <TableCell>${recordatorio.monto}</TableCell>
+                          <TableCell>{recordatorio.fecha}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+
+                  {/* Chip con la opción de eliminar al lado derecho */}
+                  <Chip
+                    label="Hecho"
+                    onDelete={() => handleDeleteRecordatorio(index)}  // Acción de eliminar
+                    deleteIcon={<CheckIcon/>}  // Icono de eliminar (bote de basura)
+                    sx={{
+                      margin: '10px 0',
+                      backgroundColor: '#d3d3d3', // Fondo gris claro para el Chip
+                      color: '#000',
+                      borderRadius: '8px',
+                      width: 'auto',
+                      alignSelf: 'flex-end', // Alineación a la derecha
+                    }}
+                  />
+                </Box>
+              ))}
+            </Box>
+          </div>
+        )}
+
+        {/* El Grid y el contenido de la ventana emergente */}
+        <Dialog open={open} onClose={closeDialog} fullWidth aria-labelledby='dialog-title'>
+          <DialogTitle sx={{ position: "relative" }}>
+            Añadir Recordatorio
+            {/* Botón de cierre en la esquina superior derecha del DialogTitle */}
+            <IconButton
+              style={{
+                position: "absolute",
+                top: "5px",
+                right: "5px",
+                color: "#f55b5b", // color rojo para el icono de cerrar
+              }}
+              onClick={closeDialog}
+            >
+              <Close />
+            </IconButton>
+          </DialogTitle>
+          <DialogContent dividers>
+            <Stack spacing={2} margin={2}>
+              <TextField
+                variant="outlined"
+                label="Título"
+                value={titulo}
+                onChange={(e) => setTitulo(e.target.value)}
+              />
+              <TextField
+                variant="outlined"
+                label="Descripción del Recordatorio"
+                value={descripcion}
+                onChange={(e) => setDescripcion(e.target.value)}
+              />
+              <TextField
+                variant="outlined"
+                label="Monto"
+                type="number"
+                value={monto}
+                inputProps={{ min: "0", step: "0.01" }}
+                onChange={(e) => setMonto(e.target.value)}
+              />
+              <TextField
+                variant="outlined"
+                label="Fecha"
+                type="date"
+                InputLabelProps={{ shrink: true }}
+                value={fecha}
+                onChange={(e) => setFecha(e.target.value)}
+              />
+            </Stack>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="contained" color="success" onClick={handleSaveRecordatorio}>
+              Añadir
+            </Button>
+            <Button variant="contained" color="error" onClick={closeDialog}>
+              Cancelar
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
+    </Container>
   );
 }
+
 export default Recordatorios;
