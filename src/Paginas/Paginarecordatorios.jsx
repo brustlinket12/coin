@@ -1,18 +1,54 @@
-import { Container, Box, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button, Stack, Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import {
+  Container,
+  Box,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
+  Stack,
+  Chip,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import { Close } from "@mui/icons-material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Player } from "@lottiefiles/react-lottie-player";
 import recordatorio_animation from "../assets/img/recordatorio_animation.json";
-import QueueIcon from '@mui/icons-material/Queue';
-import CheckIcon from '@mui/icons-material/Check';  // Icono de "hecho" (gancho)
-
+import QueueIcon from "@mui/icons-material/Queue";
+import CheckIcon from "@mui/icons-material/Check";
+import { supabase } from "../Services/supabase.js"; // Ajusta la ruta al archivo supabase.js
+import Header from "../components/Header.jsx";
 function Recordatorios() {
   const [open, setOpen] = useState(false);
-  const [recordatorios, setRecordatorios] = useState([]); // Estado para almacenar los recordatorios
+  const [recordatorios, setRecordatorios] = useState([]);
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
   const [monto, setMonto] = useState("");
   const [fecha, setFecha] = useState("");
+
+  useEffect(() => {
+    // Obtener los recordatorios desde Supabase
+    fetchRecordatorios();
+  }, []);
+
+  const fetchRecordatorios = async () => {
+    const { data, error } = await supabase
+      .from("tareas") // Cambia 'tareas' al nombre de tu tabla si es necesario
+      .select("*");
+
+    if (error) {
+      console.error("Error al cargar los recordatorios:", error);
+    } else {
+      setRecordatorios(data);
+    }
+  };
 
   const openDialog = () => {
     setOpen(true);
@@ -22,56 +58,98 @@ function Recordatorios() {
     setOpen(false);
   };
 
-  const handleSaveRecordatorio = () => {
-    // Guardar los datos del recordatorio en el estado
-    const nuevoRecordatorio = {
-      titulo,
-      descripcion,
-      monto,
-      fecha,
-    };
+  const handleSaveRecordatorio = async () => {
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
 
-    setRecordatorios([...recordatorios, nuevoRecordatorio]);
-    closeDialog(); // Cerrar el diálogo después de guardar
+    if (userError) {
+      console.error("Error al obtener el usuario:", userError);
+      return;
+    }
+
+    if (!user) {
+      console.error("No hay usuario autenticado.");
+      return;
+    }
+
+    const userUUID = user.id;
+
+    const { data, error } = await supabase
+      .from("tareas") // Cambia 'tareas' al nombre de tu tabla si es necesario
+      .insert([
+        {
+          titulo,
+          descripcion,
+          monto,
+          fecha,
+          uuid: userUUID,
+        },
+      ]);
+
+    if (error) {
+      console.error("Error al guardar el recordatorio:", error);
+    } else {
+      if (Array.isArray(data)) {
+        setRecordatorios([...recordatorios, ...data]);
+        closeDialog();
+      } else {
+        console.error("La respuesta no es un array:", data);
+      }
+    }
   };
 
-  const handleDeleteRecordatorio = (index) => {
-    // Eliminar el recordatorio usando el índice
-    const nuevosRecordatorios = recordatorios.filter((_, i) => i !== index);
-    setRecordatorios(nuevosRecordatorios);
+  const handleDeleteRecordatorio = async (index, id) => {
+    const { error } = await supabase
+      .from("tareas") // Cambia 'tareas' al nombre de tu tabla si es necesario
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error al eliminar el recordatorio:", error);
+    } else {
+      const nuevosRecordatorios = recordatorios.filter((_, i) => i !== index);
+      setRecordatorios(nuevosRecordatorios);
+    }
   };
 
   return (
     <Container>
+      {/* Aquí llamamos al Header */}
+      <Header />
       <Box
         sx={{
-          height: "100vh",
+          height: "100vh", // Asegura que el fondo ocupe toda la altura de la pantalla
           width: "100vw",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
+          justifyContent: "flex-start", // Cambié "center" a "flex-start" para que los elementos se alineen desde la parte superior
           alignItems: "center",
           backgroundColor: "rgba(6, 6, 34, 10)",
-          overflow: "hidden",
           borderRadius: "16px",
           position: "relative",
+          overflow: "auto", // Asegurando que todo el contenido sea desplazable
+          marginTop: "40px", // Espacio entre el header y los recordatorios
+          flexGrow: 10,
+          overflowX: "hidden", // Desactiva el scroll horizontal
+          overflowY: "auto", // Desactiva el scroll horizontal
         }}
       >
-        {/* Botón para abrir el dialog */}
         <IconButton
           style={{
             position: "absolute",
-            top: "20px",
-            right: "20px",
-            backgroundColor: '#808080',
-            color: "#FFFFFF"
+            top: "70px",
+            right: "60px",
+            backgroundColor: "#808080",
+            color: "#FFFFFF",
+            fontSize: "90px",
           }}
           onClick={openDialog}
         >
           <QueueIcon />
         </IconButton>
 
-        {/* Mostrar la animación solo si no hay recordatorios */}
         {recordatorios.length === 0 && (
           <>
             <Player
@@ -85,43 +163,60 @@ function Recordatorios() {
           </>
         )}
 
-        {/* Mostrar los recordatorios si existen */}
         {recordatorios.length > 0 && (
-          <div>
-            <h3>Recordatorios:</h3>
-            {/* Mostrar cada recordatorio en una barra con la opción de "hecho" */}
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+          <div
+            style={{
+              width: "100%",
+              maxHeight: "calc(100vh - 100px)", // Deja espacio para otros elementos como los botones
+              overflowY: "auto", // Habilita el desplazamiento vertical
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
               {recordatorios.map((recordatorio, index) => (
                 <Box
                   key={index}
                   sx={{
-                    marginBottom: '20px',
-                    width: '100%',
-                    maxWidth: '800px',
-                    backgroundColor: '#f0f0f0', // Fondo gris
-                    borderRadius: '8px', // Bordes redondeados
-                    padding: '10px', // Espaciado interior
-                    display: 'flex', // Alinear el título y el chip
-                    flexDirection: 'column', // Columna para tener la tabla arriba
-                    alignItems: 'flex-start', // Alineación izquierda para la tabla
-                    justifyContent: 'space-between', // Espaciado entre el título y la tabla
+                    marginBottom: "20px",
+                    width: "100%",
+                    maxWidth: "800px",
+                    backgroundColor: "#f0f0f0",
+                    borderRadius: "8px",
+                    padding: "10px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    justifyContent: "space-between",
                   }}
                 >
-                  {/* Título del recordatorio */}
                   <div>
-                    <p style={{ color: 'black' }}><strong>Titulo:</strong> {recordatorio.titulo}</p>
-                    </div>
+                    <p style={{ color: "black" }}>
+                      <strong>Titulo:</strong> {recordatorio.titulo}
+                    </p>
+                  </div>
 
-
-
-                  {/* Tabla con los datos del recordatorio */}
                   <TableContainer>
-                    <Table sx={{ minWidth: 650 }} aria-label="recordatorio-table">
+                    <Table
+                      sx={{ minWidth: 650 }}
+                      aria-label="recordatorio-table"
+                    >
                       <TableHead>
                         <TableRow>
-                          <TableCell><strong>Descripción</strong></TableCell>
-                          <TableCell><strong>Monto</strong></TableCell>
-                          <TableCell><strong>Fecha</strong></TableCell>
+                          <TableCell>
+                            <strong>Descripción</strong>
+                          </TableCell>
+                          <TableCell>
+                            <strong>Monto</strong>
+                          </TableCell>
+                          <TableCell>
+                            <strong>Fecha</strong>
+                          </TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -134,18 +229,19 @@ function Recordatorios() {
                     </Table>
                   </TableContainer>
 
-                  {/* Chip con la opción de eliminar al lado derecho */}
                   <Chip
                     label="Hecho"
-                    onDelete={() => handleDeleteRecordatorio(index)}  // Acción de eliminar
-                    deleteIcon={<CheckIcon/>}  // Icono de eliminar (bote de basura)
+                    onDelete={() =>
+                      handleDeleteRecordatorio(index, recordatorio.id)
+                    }
+                    deleteIcon={<CheckIcon />}
                     sx={{
-                      margin: '10px 0',
-                      backgroundColor: '#d3d3d3', // Fondo gris claro para el Chip
-                      color: '#000',
-                      borderRadius: '8px',
-                      width: 'auto',
-                      alignSelf: 'flex-end', // Alineación a la derecha
+                      margin: "10px 0",
+                      backgroundColor: "#d3d3d3",
+                      color: "#000",
+                      borderRadius: "8px",
+                      width: "auto",
+                      alignSelf: "flex-end",
                     }}
                   />
                 </Box>
@@ -154,17 +250,20 @@ function Recordatorios() {
           </div>
         )}
 
-        {/* El Grid y el contenido de la ventana emergente */}
-        <Dialog open={open} onClose={closeDialog} fullWidth aria-labelledby='dialog-title'>
+        <Dialog
+          open={open}
+          onClose={closeDialog}
+          fullWidth
+          aria-labelledby="dialog-title"
+        >
           <DialogTitle sx={{ position: "relative" }}>
             Añadir Recordatorio
-            {/* Botón de cierre en la esquina superior derecha del DialogTitle */}
             <IconButton
               style={{
                 position: "absolute",
                 top: "5px",
                 right: "5px",
-                color: "#f55b5b", // color rojo para el icono de cerrar
+                color: "#f55b5b",
               }}
               onClick={closeDialog}
             >
@@ -204,9 +303,17 @@ function Recordatorios() {
             </Stack>
           </DialogContent>
           <DialogActions>
-            <Button variant="contained" color="success" onClick={handleSaveRecordatorio}>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={async () => {
+                await handleSaveRecordatorio();
+                window.location.reload();
+              }}
+            >
               Añadir
             </Button>
+
             <Button variant="contained" color="error" onClick={closeDialog}>
               Cancelar
             </Button>
