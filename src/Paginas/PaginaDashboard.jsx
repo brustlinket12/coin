@@ -48,24 +48,26 @@ const StyledCard = styled(Card)(({ theme }) => ({
     color: '#FFFFFF', // color del texto
     padding: theme.spacing(2),
     '& .MuiTypography-root': {
-        color: '#FFFFFF', // ajusta el color de todos los textos dentro del Card
+        color: '#FFFFFF', // ajustar el color de todos los textos dentro del Card
     },
 }));
 
 
 
 function PaginaDashboard() {
-    const { user } = useAuth(); // Obtener el usuario autenticado
+    const { user } = useAuth(); 
     const [open, setOpen] = useState(false);
-    const [cantidad, setCantidad] = useState(""); // Estado para la cantidad ingresada
-    const [nombre, setNombre] = useState(""); // Estado para el nombre de la transacción
+    const [cantidad, setCantidad] = useState(""); 
+    const [nombre, setNombre] = useState(""); 
   
-    // Abre el diálogo
+    
     const openDialog = () => setOpen(true);
   
-    // Cierra el diálogo
+    
     const closeDialog = () => setOpen(false);
   
+    
+    
     // Función para insertar un ingreso
     const handleIngreso = async () => {
       if (!user) {
@@ -80,12 +82,12 @@ function PaginaDashboard() {
   
       try {
         const { data, error } = await supabase
-          .from("ingreso") // Tabla ingreso
+          .from("ingreso") 
           .insert([
             {
               cantidad: parseFloat(cantidad),
-              uuid: user.id, // Usamos el UUID del usuario autenticado
-              nombre: nombre, // Agregamos el nombre de la transacción
+              uuid: user.id, 
+              nombre: nombre, 
               creado_en: new Date(),
               actualizado_en: new Date(),
             },
@@ -102,7 +104,7 @@ function PaginaDashboard() {
         console.error("Error inesperado:", error);
         alert("Hubo un error al guardar el ingreso.");
       }
-      setOpen(false); // Cierra el diálogo después de insertar
+      setOpen(false); 
     };
   
     // Función para insertar un egreso
@@ -119,12 +121,12 @@ function PaginaDashboard() {
   
       try {
         const { data, error } = await supabase
-          .from("egreso") // Tabla egreso
+          .from("egreso") 
           .insert([
             {
               cantidad: parseFloat(cantidad),
-              uuid: user.id, // Usamos el UUID del usuario autenticado
-              nombre: nombre, // Agregamos el nombre de la transacción
+              uuid: user.id, 
+              nombre: nombre, 
               creado_en: new Date(),
               actualizado_en: new Date(),
             },
@@ -141,7 +143,7 @@ function PaginaDashboard() {
         console.error("Error inesperado:", error);
         alert("Hubo un error al guardar el egreso.");
       }
-      setOpen(false); // Cierra el diálogo después de insertar
+      setOpen(false); 
     };
   
 
@@ -184,7 +186,7 @@ function PaginaDashboard() {
                                             backgroundColor: '#294067', 
                                             color: '#FFFFFF', 
                                             '& .MuiTypography-root': {
-                                                color: '#FFFFFF', // ajusta el color de todos los textos dentro del Card 
+                                                color: '#FFFFFF',  
                                             }
                                         }}>
                                     <CardContent>  
@@ -203,7 +205,7 @@ function PaginaDashboard() {
                                             backgroundColor: '#294067', 
                                             color: '#FFFFFF', 
                                             '& .MuiTypography-root': {
-                                                color: '#FFFFFF', // ajusta el color de todos los textos dentro del Card 
+                                                color: '#FFFFFF',  
                                             }
                                         }}>
                                     <CardContent>  
@@ -264,10 +266,10 @@ function PaginaDashboard() {
   variant="contained"
   color="success"
   onClick={async () => {
-    await handleIngreso(); // Espera a que se complete el ingreso
-    window.location.reload(); // Recarga la página después de insertar el ingreso
+    await handleIngreso(); 
+    window.location.reload(); 
   }}
-  disabled={!cantidad || cantidad <= 0 || !nombre} // Deshabilitar si no hay cantidad válida o nombre
+  disabled={!cantidad || cantidad <= 0 || !nombre} 
 >
   Ingreso
 </Button>
@@ -276,10 +278,10 @@ function PaginaDashboard() {
   variant="contained"
   color="error"
   onClick={async () => {
-    await handleEgreso(); // Espera a que se complete el egreso
-    window.location.reload(); // Recarga la página después de insertar el egreso
+    await handleEgreso(); 
+    window.location.reload(); 
   }}
-  disabled={!cantidad || cantidad <= 0 || !nombre} // Deshabilitar si no hay cantidad válida o nombre
+  disabled={!cantidad || cantidad <= 0 || !nombre} 
 >
   Egreso
 </Button>

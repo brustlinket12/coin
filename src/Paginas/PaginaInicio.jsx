@@ -5,15 +5,14 @@ import logo2 from "../assets/img/logo2.json";
 import { useNavigate } from "react-router-dom";
 
 function PaginaInicio() {
-  const navigate = useNavigate();  // Inicializa el hook useNavigate
+  const navigate = useNavigate(); 
 
-  // Funciones para manejar los clics de los botones
   const handleLoginClick = () => {
-    navigate("/inicio-sesion");  // Redirige a la página de inicio sesión
+    navigate("/inicio-sesion");  
   };
 
   const handleRegisterClick = () => {
-    navigate("/registrar");  // Redirige a la página de registro
+    navigate("/registrar"); 
   };
   return (
     <Box display="flex" justifyContent="space-between" width="100%">

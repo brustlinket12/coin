@@ -7,26 +7,23 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 function PaginaMonto() {
-  const [cantidad, setCantidad] = useState(""); // Estado para cantidad
-  const { user, loading } = useAuth();  // Obtén el usuario y el estado de carga
+  const [cantidad, setCantidad] = useState(""); 
+  const { user, loading } = useAuth();  
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Si está cargando, evita la interacción
     if (loading) {
       alert("Verificando autenticación...");
       return;
     }
 
-    // Verifica si el usuario está autenticado
     if (!user) {
       alert("Usuario no autenticado. Por favor, inicia sesión.");
       return;
     }
 
-    // Convierte la cantidad a número y valida
     const numeroCantidad = Number(cantidad);
     if (isNaN(numeroCantidad) || numeroCantidad <= 0) {
       alert("Por favor, ingresa un número válido mayor a 0.");
@@ -34,18 +31,18 @@ function PaginaMonto() {
     }
 
     try {
-      // Inserta el dato en la tabla "ingreso" y columna "cantidad"
+
       const { data, error } = await supabase
-        .from("ingreso") // Asegúrate de que la tabla se llame "ingreso"
-        .insert([{ cantidad: numeroCantidad, uuid: user.id }]); // Asegúrate de que "uuid" sea el campo correcto
+        .from("ingreso") 
+        .insert([{ cantidad: numeroCantidad, uuid: user.id }]); 
 
       if (error) {
         console.error("Error al insertar monto:", error.message);
         alert("Hubo un error al guardar el monto: " + error.message);
       } else {
         alert("Monto guardado exitosamente.");
-        setCantidad(""); // Limpia el campo de cantidad
-        navigate("/dashboard"); // Redirige a otra página (como un dashboard)
+        setCantidad(""); 
+        navigate("/dashboard"); 
       }
     } catch (error) {
       console.error("Error inesperado:", error);
@@ -53,7 +50,6 @@ function PaginaMonto() {
     }
   };
 
-  // Mientras se verifica la autenticación
   if (loading) {
     return <div>Cargando...</div>;
   }

@@ -12,7 +12,8 @@ const [email, setEmail] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    // Validación básica de campos
+
+    // Validar campos
     if (!email || !password) {
       setError("Por favor, ingresa tanto el email como la contraseña.");
       return;
@@ -29,36 +30,35 @@ const [email, setEmail] = useState("");
         return;
       }
 
-      // Verifica si el usuario tiene datos en la tabla "monto"
+      //si el usuario tiene datos en la tabla monto
       const { data: montoData, error: montoError } = await supabase
         .from("monto")
         .select("cantidad")
         .eq("uuid", data.user.id)
-        .limit(1); // Aseguramos que solo se reciba un registro
+        .limit(1);
 
       if (montoError) {
         setError(montoError.message);
         return;
       }
 
-      // Verificar si el usuario tiene registros en la tabla "ingreso"
+      //si el usuario tiene registros en la tabla ingreso
       const { data: ingresosData, error: ingresosError } = await supabase
         .from("ingreso")
         .select("id")
         .eq("uuid", data.user.id)
-        .limit(1); // Verifica si existe al menos un ingreso
+        .limit(1); 
 
       if (ingresosError) {
         setError(ingresosError.message);
         return;
       }
 
-      // Si no tiene registros ni en "monto" ni en "ingreso", lo redirige al tutorial
+      // si no tiene nada, lo manda al tutorial
       if (!montoData || montoData.length === 0 || !ingresosData || ingresosData.length === 0) {
-        // No hay datos en "monto" ni en "ingreso", redirige al tutorial
         navigate("/tutorial");
       } else {
-        // Si tiene datos, redirige al dashboard
+        // tiene vainas entonces va pal dashboard
         navigate("/dashboard");
       }
       

@@ -6,7 +6,6 @@ import { registrarUsuario } from "../Services/supabase.js";
 import { useNavigate } from 'react-router-dom';
 
 function PaginaInicioRegistrar() {
- // Importa useNavigate de react-router-dom
 
 const [error, setError] = useState('');
 const [values, setValues] = useState({
@@ -14,7 +13,7 @@ const [values, setValues] = useState({
   password: "",
 });
 
-const navigate = useNavigate(); // Inicializa el hook de navegación
+const navigate = useNavigate(); 
 
 const handleChange = (e) => {
   setValues({
@@ -34,7 +33,6 @@ const handleSubmit = async (e) => {
 
   setError("");
 
-  // Llamar a la función registrarUsuario
   const result = await registrarUsuario({
     email: values.email,
     password: values.password,
@@ -46,7 +44,7 @@ const handleSubmit = async (e) => {
   } else {
     console.log("Usuario registrado exitosamente:", result.user);
     setError("Usuario registrado correctamente. Verifica tu correo.");
-    navigate('/transicion');  // Cambia '/pagina-de-bienvenida' por la ruta que desees
+    navigate('/transicion');  
   }
 };
 

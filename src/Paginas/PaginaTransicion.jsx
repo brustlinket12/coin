@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
 import { Box } from "@mui/material";
 import { Player } from "@lottiefiles/react-lottie-player";
-import { useNavigate } from 'react-router-dom'; // Asegúrate de tener react-router-dom instalado
-import chek from "../assets/img/chek.json"; // Verifica la ruta
+import { useNavigate } from 'react-router-dom'; 
+import chek from "../assets/img/chek.json"; 
 
 function PaginaTransicion() {
-  const navigate = useNavigate(); // Hook para redirigir
+  const navigate = useNavigate(); 
 
   useEffect(() => {
+
     // Redirigir después de 9 segundos
     const timer = setTimeout(() => {
-      navigate("/inicio-sesion"); // Cambia la ruta de destino aquí
-    }, 6000); // 9 segundos
+      navigate("/inicio-sesion"); 
+    }, 6000); 
 
-    // Limpiar el temporizador si el componente se desmonta
     return () => clearTimeout(timer);
   }, [navigate]);
 
@@ -23,10 +23,10 @@ function PaginaTransicion() {
       justifyContent="center"
       alignItems="center"
       style={{
-        height: "100vh", // Asegura que ocupe toda la altura de la pantalla
-        width: "100%", // Asegura que ocupe todo el ancho de la pantalla
-        backgroundColor:"rgba(6, 6, 34, 10)", // Fondo para el Box
-        position: "absolute", // Asegura que el Box ocupe toda la pantalla
+        height: "100vh", 
+        width: "100%", 
+        backgroundColor:"rgba(6, 6, 34, 10)", 
+        position: "absolute", 
         top: 0,
         left: 0
       }}
@@ -36,8 +36,8 @@ function PaginaTransicion() {
         loop
         src={chek}
         style={{
-          height: "500px", // Ajusta el tamaño según tus necesidades
-          width: "500px",  // Ajusta el tamaño según tus necesidades
+          height: "500px", 
+          width: "500px",  
         }}
       />
     </Box>

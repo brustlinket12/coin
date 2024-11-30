@@ -6,8 +6,8 @@ import { styled } from '@mui/material/styles';
 import Grid from "@mui/material/Grid2";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { useAuth } from "../context/AuthContext"; // Asegúrate de tener el contexto de autenticación
-import { supabase } from "../Services/supabase.js"; // Asegúrate de que la ruta de supabase esté correcta
+import { useAuth } from "../context/AuthContext"; 
+import { supabase } from "../Services/supabase.js"; 
 
 const StyledCard = styled(Card)(({ theme }) => ({
     backgroundColor: '#294067',
@@ -21,10 +21,10 @@ const StyledCard = styled(Card)(({ theme }) => ({
 }));
 
 function PaginaEgresos() {
-    const { user, loading } = useAuth(); // Obtenemos el usuario desde el contexto
-    const [egresos, setEgresos] = useState([]); // Estado para guardar los egresos
+    const { user, loading } = useAuth(); 
+    const [egresos, setEgresos] = useState([]); 
 
-    // Función para obtener los egresos desde Supabase
+    
     useEffect(() => {
         const fetchEgresos = async () => {
             try {
@@ -32,15 +32,15 @@ function PaginaEgresos() {
                     const { data, error } = await supabase
                         .from("egreso")
                         .select("id, cantidad, nombre, creado_en")
-                        .eq("uuid", user.id) // Filtrar por UUID del usuario
-                        .order("creado_en", { ascending: false }); // Ordenar por fecha descendente
+                        .eq("uuid", user.id) 
+                        .order("creado_en", { ascending: false }); // pa ordenar en fechas
 
                     if (error) {
                         console.error("Error al obtener egresos:", error.message);
                         return;
                     }
 
-                    setEgresos(data || []); // Si no hay datos, asignamos un array vacío
+                    setEgresos(data || []); // vacio si no hay na
                 }
             } catch (error) {
                 console.error("Error inesperado:", error);
@@ -50,7 +50,7 @@ function PaginaEgresos() {
         if (!loading && user) {
             fetchEgresos();
         }
-    }, [user, loading]); // Dependencia en el usuario y el estado de carga
+    }, [user, loading]); 
 
     if (loading) {
         return <p>Cargando...</p>;

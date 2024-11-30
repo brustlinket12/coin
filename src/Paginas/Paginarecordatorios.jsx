@@ -23,7 +23,7 @@ import { Player } from "@lottiefiles/react-lottie-player";
 import recordatorio_animation from "../assets/img/recordatorio_animation.json";
 import QueueIcon from "@mui/icons-material/Queue";
 import CheckIcon from "@mui/icons-material/Check";
-import { supabase } from "../Services/supabase.js"; // Ajusta la ruta al archivo supabase.js
+import { supabase } from "../Services/supabase.js"; 
 import Header from "../components/Header.jsx";
 import { Typography } from "@mui/material";
 
@@ -36,6 +36,7 @@ function Recordatorios() {
   const [fecha, setFecha] = useState("");
 
   useEffect(() => {
+
     // Obtener los recordatorios desde Supabase
     fetchRecordatorios();
   }, []);
@@ -58,11 +59,10 @@ function Recordatorios() {
   
     const userUUID = user.id;
   
-    // Ahora filtramos las tareas por el uuid del usuario
     const { data, error } = await supabase
-      .from("tareas") // Cambia 'tareas' al nombre de tu tabla si es necesario
+      .from("tareas") 
       .select("*")
-      .eq("uuid", userUUID); // Filtra solo las tareas del usuario autenticado
+      .eq("uuid", userUUID); 
   
     if (error) {
       console.error("Error al cargar los recordatorios:", error);
@@ -99,7 +99,7 @@ function Recordatorios() {
     const userUUID = user.id;
 
     const { data, error } = await supabase
-      .from("tareas") // Cambia 'tareas' al nombre de tu tabla si es necesario
+      .from("tareas") 
       .insert([
         {
           titulo,
@@ -124,7 +124,7 @@ function Recordatorios() {
 
   const handleDeleteRecordatorio = async (index, id) => {
     const { error } = await supabase
-      .from("tareas") // Cambia 'tareas' al nombre de tu tabla si es necesario
+      .from("tareas") 
       .delete()
       .eq("id", id);
 
@@ -141,20 +141,20 @@ function Recordatorios() {
       <Header />
       <Box
         sx={{
-          height: "100vh", // Asegura que el fondo ocupe toda la altura de la pantalla
+          height: "100vh", 
           width: "100vw",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "flex-start", // Cambié "center" a "flex-start" para que los elementos se alineen desde la parte superior
+          justifyContent: "flex-start", 
           alignItems: "center",
           backgroundColor: "rgba(6, 6, 34, 10)",
           borderRadius: "16px",
           position: "relative",
-          overflow: "auto", // Asegurando que todo el contenido sea desplazable
-          marginTop: "40px", // Espacio entre el header y los recordatorios
+          overflow: "auto", 
+          marginTop: "40px", 
           flexGrow: 10,
-          overflowX: "hidden", // Desactiva el scroll horizontal
-          overflowY: "auto", // Desactiva el scroll horizontal
+          overflowX: "hidden", 
+          overflowY: "auto", 
         }}
       >
         <IconButton
@@ -208,8 +208,8 @@ function Recordatorios() {
           <div
             style={{
               width: "100%",
-              maxHeight: "calc(100vh - 100px)", // Deja espacio para otros elementos como los botones
-              overflowY: "auto", // Habilita el desplazamiento vertical
+              maxHeight: "calc(100vh - 100px)", 
+              overflowY: "auto", 
             }}
           >
             <Box
