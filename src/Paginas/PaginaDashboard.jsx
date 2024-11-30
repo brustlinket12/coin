@@ -28,8 +28,9 @@ import { Close } from "@mui/icons-material";
 import MostrarCantidad from "../Funciones/MostrarCantidad";
 import MostrarUltimoIngreso from "../Funciones/MostrarUltimoIngreso";
 import MostrarUltimoEgreso from "../Funciones/MostrarUltimoEgreso";
-import { useAuth } from "../context/AuthContext"; // Asegúrate de que la ruta del contexto sea correcta
+import { useAuth } from "../context/AuthContext";
 import { supabase } from "../Services/supabase.js";
+import Tareasdash from "../Funciones/Tareasdash.jsx";
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: '#20314f', // #0D1127
@@ -325,7 +326,7 @@ function PaginaDashboard() {
                                         <StyledCard sx={{width: 300}}>
                                             <CardContent>
                                                 <Typography>
-                                                    Aquí iria la lista de cosas si es q lo implementan
+                                                   <Tareasdash/>
                                                 </Typography>
                                             </CardContent>
                                         </StyledCard>

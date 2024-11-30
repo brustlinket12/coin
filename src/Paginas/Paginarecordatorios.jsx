@@ -25,6 +25,8 @@ import QueueIcon from "@mui/icons-material/Queue";
 import CheckIcon from "@mui/icons-material/Check";
 import { supabase } from "../Services/supabase.js"; // Ajusta la ruta al archivo supabase.js
 import Header from "../components/Header.jsx";
+import { Typography } from "@mui/material";
+
 function Recordatorios() {
   const [open, setOpen] = useState(false);
   const [recordatorios, setRecordatorios] = useState([]);
@@ -116,7 +118,6 @@ function Recordatorios() {
 
   return (
     <Container>
-      {/* Aquí llamamos al Header */}
       <Header />
       <Box
         sx={{
@@ -158,8 +159,28 @@ function Recordatorios() {
               src={recordatorio_animation}
               style={{ height: "100%", width: "350px" }}
             />
-            <h2>¿Tienes que realizar algún pago en próximas fechas?</h2>
-            <h2>¡Crea un recordatorio!</h2>
+            <Typography
+              variant="h2"
+              sx={{
+                fontSize: "24px",
+                color: "#fff",
+                textAlign: "center",
+                marginBottom: "10px",
+              }}
+            >
+              ¿Tienes que realizar algún pago en próximas fechas?
+            </Typography>
+            <Typography
+              variant="h2"
+              sx={{
+                fontSize: "20px",
+                color: "#fff",
+                textAlign: "center",
+                marginTop: "10px",
+              }}
+            >
+              ¡Crea un recordatorio!
+            </Typography>
           </>
         )}
 
