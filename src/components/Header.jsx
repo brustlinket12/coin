@@ -39,7 +39,7 @@ function Header() {
     return (
         <AppBar position="fixed" 
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, 
-            backgroundColor: '#294067',
+            backgroundColor: '#006992',
             color : 'white'
         }}>
             <Container maxWidth="xl">

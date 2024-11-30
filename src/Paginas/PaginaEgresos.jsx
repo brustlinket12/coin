@@ -18,6 +18,30 @@ const StyledCard = styled(Card)(({ theme }) => ({
     },
     width: '100%',
     boxSizing: 'border-box',
+    cursor: 'pointer', 
+    transition: 'all 0.25s cubic-bezier(0, 0, 0, 1)', // transición suave
+    '&:hover': {
+    transform: 'scale(0.98)', // efecto de escala
+    backgroundColor: '#294067', 
+    },
+    '&:before': {
+    content: '""', // pseudo-elemento para el borde
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: '10px', // igual al radio de la card
+    padding: '2px', // grosor del borde
+    background: 'linear-gradient(163deg, #3c91f9 0%, #72faca 100%)', // gradiente
+    mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+    maskComposite: 'exclude',
+    WebkitMaskComposite: 'xor', // soporte para navegadores basados en Webkit
+    zIndex: -1, // asegura que quede detrás del contenido
+    },
+    '& .MuiTypography-root': {
+    color: '#FFFFFF', // ajustar el color de los textos dentro de la card
+    },
 }));
 
 function PaginaEgresos() {
@@ -64,7 +88,38 @@ function PaginaEgresos() {
         <>
             <Header />
             <Box height={30} />
-            <Box sx={{ display: "flex", height: '100vh', width:'100vw', backgroundColor: '#0D1127' }}>
+            <Box 
+                sx={{
+                    width: "100vw",
+                    height: "100vh",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    background: `
+                        linear-gradient(
+                        135deg,
+                        #0D1127 25%,
+                        #11162b 25%,
+                        #11162b 50%,
+                        #0D1127 50%,
+                        #0D1127 75%,
+                        #11162b 75%,
+                        #11162b
+                        )
+                    `,
+                    backgroundColor: "#121212", // Fallback color
+                    backgroundSize: "40px 40px",
+                    animation: "move 4s linear infinite",
+                    "@keyframes move": {
+                        "0%": {
+                        backgroundPosition: "0 0",
+                        },
+                        "100%": {
+                        backgroundPosition: "40px 40px",
+                        },
+                    },
+                    }}
+                >
                 <SideNav />
                 <Box
                     component="main"

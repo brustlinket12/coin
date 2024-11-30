@@ -141,21 +141,35 @@ function Recordatorios() {
       <Header />
       <Box
         sx={{
-          height: "100vh", 
           width: "100vw",
+          height: "100vh",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-start", 
+          justifyContent: "center",
           alignItems: "center",
-          backgroundColor: "rgba(6, 6, 34, 10)",
-          borderRadius: "16px",
-          position: "relative",
-          overflow: "auto", 
-          marginTop: "40px", 
-          flexGrow: 10,
-          overflowX: "hidden", 
-          overflowY: "auto", 
-        }}
+          background: `
+              linear-gradient(
+              135deg,
+              #0D1127 25%,
+              #11162b 25%,
+              #11162b 50%,
+              #0D1127 50%,
+              #0D1127 75%,
+              #11162b 75%,
+              #11162b
+              )
+          `,
+          backgroundColor: "#121212", // Fallback color
+          backgroundSize: "40px 40px",
+          animation: "move 4s linear infinite",
+          "@keyframes move": {
+              "0%": {
+              backgroundPosition: "0 0",
+              },
+              "100%": {
+              backgroundPosition: "40px 40px",
+              },
+          },
+          }}
       >
         <IconButton
           style={{

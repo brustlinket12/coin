@@ -41,15 +41,46 @@ const Item = styled(Paper)(({ theme }) => ({
     ...theme.applyStyles('dark', {
         backgroundColor: '#060618',
     }),
+    borderRadius: '20px',
+    cursor: 'pointer',
+    transition: 'all 0.20s cubic-bezier(0, 0, 0, 1)', // transición suave
+  '&:hover': {
+    background: 'linear-gradient(163deg, #007ca4 0%, #294067 100%)',
+  }
 }));
 
 const StyledCard = styled(Card)(({ theme }) => ({
-    backgroundColor: '#294067', 
+    backgroundColor: '#006992', 
+    borderRadius: '10px',
     color: '#FFFFFF', // color del texto
     padding: theme.spacing(2),
     '& .MuiTypography-root': {
         color: '#FFFFFF', // ajustar el color de todos los textos dentro del Card
     },
+    cursor: 'pointer', 
+    transition: 'all 0.25s cubic-bezier(0, 0, 0, 1)', // transición suave
+  '&:hover': {
+    transform: 'scale(0.98)', // efecto de escala
+    backgroundColor: '#294067', 
+  },
+  '&:before': {
+    content: '""', // pseudo-elemento para el borde
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderRadius: '10px', // igual al radio de la card
+    padding: '2px', // grosor del borde
+    background: 'linear-gradient(163deg, #3c91f9 0%, #72faca 100%)', // gradiente
+    mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+    maskComposite: 'exclude',
+    WebkitMaskComposite: 'xor', // soporte para navegadores basados en Webkit
+    zIndex: -1, // asegura que quede detrás del contenido
+  },
+  '& .MuiTypography-root': {
+    color: '#FFFFFF', // ajustar el color de los textos dentro de la card
+  },
 }));
 
 
@@ -152,7 +183,38 @@ function PaginaDashboard() {
         <>
             <Header />
             <Box height={30} />
-            <Box sx={{ display: "flex", backgroundColor:'#0D1127' }}>
+            <Box 
+              sx={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                background: `
+                  linear-gradient(
+                    135deg,
+                    #0D1127 25%,
+                    #11162b 25%,
+                    #11162b 50%,
+                    #0D1127 50%,
+                    #0D1127 75%,
+                    #11162b 75%,
+                    #11162b
+                  )
+                `,
+                backgroundColor: "#121212", // Fallback color
+                backgroundSize: "40px 40px",
+                animation: "move 4s linear infinite",
+                "@keyframes move": {
+                  "0%": {
+                    backgroundPosition: "0 0",
+                  },
+                  "100%": {
+                    backgroundPosition: "40px 40px",
+                  },
+                },
+              }}
+              >
                 <SideNav />
                 <Box component="main" sx={{ flexGrow: 1, p: 8 }}>
 
@@ -181,14 +243,39 @@ function PaginaDashboard() {
                         <Grid size={3}>
                             <Item>
                                 <Stack spacing={2}>
-                                <Card sx={{ 
-                                            maxWidth: 250, 
-                                            backgroundColor: '#294067', 
-                                            color: '#FFFFFF', 
-                                            '& .MuiTypography-root': {
-                                                color: '#FFFFFF',  
-                                            }
-                                        }}>
+                                <Card
+                                      sx={{
+                                        maxWidth: 250, // Tamaño máximo de la card
+                                        backgroundColor: '#006992', // Fondo inicial
+                                        color: '#FFFFFF', // Color del texto
+                                        borderRadius: '10px', // Bordes redondeados
+                                        position: 'relative', // Necesario para el pseudo-elemento
+                                        overflow: 'hidden', // Evitar desbordes
+                                        cursor: 'pointer', // Cursor en hover
+                                        transition: 'all 0.25s cubic-bezier(0, 0, 0, 1)', // Transición suave
+                                        '&:hover': {
+                                          transform: 'scale(0.98)', // Efecto de escala al hacer hover
+                                          backgroundColor: '#294067', // Cambio de color al pasar el mouse
+                                        },
+                                        '&:before': {
+                                          content: '""', // Pseudo-elemento para el borde
+                                          position: 'absolute',
+                                          top: 0,
+                                          left: 0,
+                                          right: 0,
+                                          bottom: 0,
+                                          borderRadius: '10px', // Igual al radio de la card
+                                          padding: '2px', // Grosor del borde
+                                          background: 'linear-gradient(163deg, #3c91f9 0%, #72faca 100%)', // Gradiente
+                                          mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                                          maskComposite: 'exclude',
+                                          WebkitMaskComposite: 'xor', // Compatibilidad con navegadores basados en Webkit
+                                          zIndex: -1, // Asegurar que quede detrás del contenido
+                                        },
+                                        '& .MuiTypography-root': {
+                                          color: '#FFFFFF', // Ajuste del color del texto dentro de la card
+                                        },
+                                      }}>
                                     <CardContent>  
                                         <Typography gutterBottom variant="h5" component="div">
                                         <ArrowCircleUpIcon style={{float:'right', color:"#5BF561"}} />
@@ -200,14 +287,38 @@ function PaginaDashboard() {
                                     </CardContent>
                                 </Card>
 
-                                <Card sx={{ 
-                                            maxWidth: 250, 
-                                            backgroundColor: '#294067', 
-                                            color: '#FFFFFF', 
-                                            '& .MuiTypography-root': {
-                                                color: '#FFFFFF',  
-                                            }
-                                        }}>
+                                <Card sx={{
+                                        maxWidth: 250, // Tamaño máximo de la card
+                                        backgroundColor: '#006992', // Fondo inicial
+                                        color: '#FFFFFF', // Color del texto
+                                        borderRadius: '10px', // Bordes redondeados
+                                        position: 'relative', // Necesario para el pseudo-elemento
+                                        overflow: 'hidden', // Evitar desbordes
+                                        cursor: 'pointer', // Cursor en hover
+                                        transition: 'all 0.25s cubic-bezier(0, 0, 0, 1)', // Transición suave
+                                        '&:hover': {
+                                          transform: 'scale(0.98)', // Efecto de escala al hacer hover
+                                          backgroundColor: '#294067', // Cambio de color al pasar el mouse
+                                        },
+                                        '&:before': {
+                                          content: '""', // Pseudo-elemento para el borde
+                                          position: 'absolute',
+                                          top: 0,
+                                          left: 0,
+                                          right: 0,
+                                          bottom: 0,
+                                          borderRadius: '10px', // Igual al radio de la card
+                                          padding: '2px', // Grosor del borde
+                                          background: 'linear-gradient(163deg, #3c91f9 0%, #72faca 100%)', // Gradiente
+                                          mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                                          maskComposite: 'exclude',
+                                          WebkitMaskComposite: 'xor', // Compatibilidad con navegadores basados en Webkit
+                                          zIndex: -1, // Asegurar que quede detrás del contenido
+                                        },
+                                        '& .MuiTypography-root': {
+                                          color: '#FFFFFF', // Ajuste del color del texto dentro de la card
+                                        },
+                                      }}>
                                     <CardContent>  
                                         <Typography gutterBottom variant="h5" component="div">
                                         <ArrowCircleDownIcon style={{float:'right', color:"#f55b5b"}} />
@@ -310,7 +421,7 @@ function PaginaDashboard() {
                                             {
                                                 data: [2, 5.5, 2, 8.5, 1.5, 5],
                                                 area: true,
-                                                color: '#59a14f',
+                                                color: '#0094a4',
 
                                                 areaOpacity: 0.3,
                                             },

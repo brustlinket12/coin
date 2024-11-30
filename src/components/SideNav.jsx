@@ -42,7 +42,7 @@ export default function SideNav({ open, onClose }) {
                 '& .MuiDrawer-paper': {
                     width: drawerWidth,
                     boxSizing: 'border-box',
-                    bgcolor: '#294067',
+                    bgcolor: '#006992',
                     color: '#FFFFFF'
                 },
             }}
