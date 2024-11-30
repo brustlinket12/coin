@@ -39,18 +39,38 @@ function Recordatorios() {
     // Obtener los recordatorios desde Supabase
     fetchRecordatorios();
   }, []);
-
   const fetchRecordatorios = async () => {
+    // Obtener el usuario autenticado
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+  
+    if (userError) {
+      console.error("Error al obtener el usuario:", userError);
+      return;
+    }
+  
+    if (!user) {
+      console.error("No hay usuario autenticado.");
+      return;
+    }
+  
+    const userUUID = user.id;
+  
+    // Ahora filtramos las tareas por el uuid del usuario
     const { data, error } = await supabase
       .from("tareas") // Cambia 'tareas' al nombre de tu tabla si es necesario
-      .select("*");
-
+      .select("*")
+      .eq("uuid", userUUID); // Filtra solo las tareas del usuario autenticado
+  
     if (error) {
       console.error("Error al cargar los recordatorios:", error);
     } else {
       setRecordatorios(data);
     }
   };
+  
 
   const openDialog = () => {
     setOpen(true);
