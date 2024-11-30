@@ -1,41 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext.jsx"; // Asegúrate de que la ruta del contexto sea correcta
+import { useAuth } from "../context/AuthContext.jsx"; 
 import { supabase } from "../Services/supabase.js";
-import { Typography, Box, List, ListItem, ListItemText } from "@mui/material"; // Material UI para estilos
+import { Typography, Box, List, ListItem, ListItemText } from "@mui/material"; 
 
 const MostrarTodosEgresos = () => {
-  const { user, loading } = useAuth(); // Obtenemos el usuario desde el contexto
-  const [egresos, setEgresos] = useState([]); // Guardamos todos los egresos
+  const { user, loading } = useAuth(); 
+  const [egresos, setEgresos] = useState([]); 
 
   useEffect(() => {
     const fetchEgresos = async () => {
       try {
         if (user) {
-          // Consulta para obtener todos los egresos
+
           const { data, error } = await supabase
-            .from("egreso") // Trabajamos con la tabla 'egreso'
-            .select("id, cantidad, nombre, creado_en") // Seleccionamos los campos necesarios
-            .eq("uuid", user.id) // Filtramos por el UUID del usuario autenticado
-            .order("creado_en", { ascending: false }); // Ordenamos por fecha de creación descendente
+            .from("egreso") 
+            .select("id, cantidad, nombre, creado_en")
+            .eq("uuid", user.id) 
+            .order("creado_en", { ascending: false });
 
           if (error) {
             console.error("Error al obtener egresos:", error.message);
             return;
           }
 
-          // Actualizamos el estado con la lista de egresos obtenida
-          setEgresos(data || []); // Si no hay datos, asignamos un array vacío
+          setEgresos(data || []); 
         }
       } catch (error) {
         console.error("Error inesperado:", error);
       }
     };
 
-    // Llamamos a la función para obtener los egresos cuando el usuario esté autenticado
     if (!loading && user) {
       fetchEgresos();
     }
-  }, [user, loading]); // Dependencia en el usuario y el estado de carga
+  }, [user, loading]);
 
   if (loading) {
     return <p>Cargando...</p>;

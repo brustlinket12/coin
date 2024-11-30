@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from 'recharts'; // Usando Recharts
-import { supabase } from "../Services/supabase.js"; // Ajusta la ruta al archivo supabase.js
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, CartesianGrid, ResponsiveContainer } from 'recharts'; 
+import { supabase } from "../Services/supabase.js"; 
 
 const Graficodos = ({ user }) => {
   const [data, setData] = useState([]);
@@ -19,7 +19,7 @@ const Graficodos = ({ user }) => {
 
           if (error) throw error;
 
-          console.log("Datos obtenidos:", data); // Ver los datos obtenidos
+          console.log("Datos obtenidos:", data); 
 
           if (data.length > 0) {
             const formattedData = data.map(item => ({

@@ -1,43 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext"; // Asegúrate de que la ruta del contexto sea correcta
-import { supabase } from "../Services/supabase.js";  // Ajusta la ruta al archivo supabase.js ""; // Ruta a la configuración de Supabase
-import { Typography } from "@mui/material"; // Material UI para estilos
+import { useAuth } from "../context/AuthContext"; 
+import { supabase } from "../Services/supabase.js";  
+import { Typography } from "@mui/material";
 
 const MostrarUltimoIngreso = () => {
-  const { user, loading } = useAuth(); // Obtenemos el usuario desde el contexto
-  const [ultimoIngreso, setUltimoIngreso] = useState(null); // Guardamos el último ingreso
+  const { user, loading } = useAuth(); 
+  const [ultimoIngreso, setUltimoIngreso] = useState(null); 
 
   useEffect(() => {
     const fetchUltimoIngreso = async () => {
       try {
         if (user) {
-          // Consulta para obtener el último ingreso
+
           const { data, error } = await supabase
-            .from("ingreso") // Trabajamos con la tabla 'ingreso'
+            .from("ingreso")
             .select("cantidad")
-            .eq("uuid", user.id) // Filtramos por el UUID del usuario autenticado
-            .order("creado_en", { ascending: false }) // Ordenamos por fecha de creación descendente
-            .limit(1) // Limitamos la consulta a 1 resultado
-            .single(); // Usamos single() para obtener solo un único resultado
+            .eq("uuid", user.id) 
+            .order("creado_en", { ascending: false })
+            .limit(1)
+            .single();
 
           if (error) {
             console.error("Error al obtener último ingreso:", error.message);
             return;
           }
 
-          // Si obtenemos un resultado, actualizamos el estado
-          setUltimoIngreso(data ? data.cantidad : 0); // Si no hay datos, asignamos 0
+          setUltimoIngreso(data ? data.cantidad : 0); 
         }
       } catch (error) {
         console.error("Error inesperado:", error);
       }
     };
 
-    // Llamamos a la función para obtener el último ingreso cuando el usuario está autenticado
     if (!loading && user) {
       fetchUltimoIngreso();
     }
-  }, [user, loading]); // Dependencia en el usuario y el estado de carga
+  }, [user, loading]); 
 
   if (loading) {
     return <p>Cargando...</p>;

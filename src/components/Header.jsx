@@ -12,8 +12,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
 
-// Importa la imagen personalizada
-import CustomLogo from '/src/assets/img/logo1.png'; // Ajusta la ruta según la ubicación de tu imagen
+import CustomLogo from '/src/assets/img/logo1.png'; 
 import Navbar from './SideNavOpener';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -101,10 +100,9 @@ function Header() {
                             onClose={handleCloseNavMenu}
                             sx={{ display: { xs: 'block', md: 'none' } }}
                         >
-                            {/* Opcionalmente, puedes eliminar este menú si no necesitas las opciones móviles */}
+                            
                         </Menu>
                     </Box>
-                    {/* Reemplaza el segundo AdbIcon con la imagen personalizada */}
                     <Box
                         component="img"
                         src={CustomLogo}

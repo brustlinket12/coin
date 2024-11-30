@@ -5,7 +5,7 @@ import PaginaInicioSesion from './Paginas/PaginaInicioSesion'; // Página de ini
 import PaginaInicioRegistrar from './Paginas/PaginaInicioRegistrar'; // Página de registro
 import PaginaDashboard from './Paginas/PaginaDashboard'; // Página del dashboard
 import PaginaMonto from './Paginas/PaginaMonto';
-import PaginaTransicion from './Paginas/paginatransicion';
+import PaginaTransicion from './Paginas/PaginaTransicion';
 import PaginaIngresos from './Paginas/PaginaIngresos';
 import PaginaEgresos from './Paginas/PaginaEgresos';
 import Paginarecordatorios from './Paginas/Paginarecordatorios';
@@ -16,8 +16,8 @@ function App() {
     <AuthProvider>
       <Router>
         <Routes>
-          {/* Ruta inicial (por defecto) */}
-          <Route path="/" element={<PaginaInicio />} /> {/* Página de inicio como página por defecto */}
+          {/* pagina default el landing */}
+          <Route path="/" element={<PaginaInicio />} />
 
           {/* Otras rutas */}
           <Route path="/tutorial" element={<PaginaMonto />} />

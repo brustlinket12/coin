@@ -1,43 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext"; // Asegúrate de que la ruta del contexto sea correcta
+import { useAuth } from "../context/AuthContext";
 import { supabase } from "../Services/supabase.js";
-import { Typography } from "@mui/material"; // Material UI para estilos
+import { Typography } from "@mui/material"; 
 
 const MostrarUltimoEgreso = () => {
-  const { user, loading } = useAuth(); // Obtenemos el usuario desde el contexto
-  const [ultimoEgreso, setUltimoEgreso] = useState(null); // Guardamos el último egreso
+  const { user, loading } = useAuth(); 
+  const [ultimoEgreso, setUltimoEgreso] = useState(null); 
 
   useEffect(() => {
     const fetchUltimoEgreso = async () => {
       try {
         if (user) {
-          // Consulta para obtener el último egreso
+
           const { data, error } = await supabase
-            .from("egreso") // Trabajamos con la tabla 'egreso'
+            .from("egreso")
             .select("cantidad")
-            .eq("uuid", user.id) // Filtramos por el UUID del usuario autenticado
-            .order("creado_en", { ascending: false }) // Ordenamos por fecha de creación descendente
-            .limit(1) // Limitamos la consulta a 1 resultado
-            .single(); // Usamos single() para obtener solo un único resultado
+            .eq("uuid", user.id) 
+            .order("creado_en", { ascending: false })
+            .limit(1)
+            .single();
 
           if (error) {
             console.error("Error al obtener último egreso:", error.message);
             return;
           }
 
-          // Si obtenemos un resultado, actualizamos el estado
-          setUltimoEgreso(data ? data.cantidad : 0); // Si no hay datos, asignamos 0
+          setUltimoEgreso(data ? data.cantidad : 0);
         }
       } catch (error) {
         console.error("Error inesperado:", error);
       }
     };
 
-    // Llamamos a la función para obtener el último egreso cuando el usuario está autenticado
     if (!loading && user) {
       fetchUltimoEgreso();
     }
-  }, [user, loading]); // Dependencia en el usuario y el estado de carga
+  }, [user, loading]);
 
   if (loading) {
     return <p>Cargando...</p>;

@@ -3,7 +3,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import PropTypes from 'prop-types';  // Importa PropTypes
+import PropTypes from 'prop-types';  
 import PaginaIngresos from '../Paginas/PaginaIngresos';
 import PaginaDashboard from '../Paginas/PaginaDashboard';
 import PaginaEgresos from '../Paginas/PaginaEgresos';
@@ -47,7 +47,7 @@ export default function SideNav({ open, onClose }) {
                 },
             }}
             open={open}
-            onClose={onClose} // Llamará a `onClose` para cerrar el Drawer
+            onClose={onClose} 
             anchor="left"
         >
             <Toolbar />
@@ -86,7 +86,7 @@ export default function SideNav({ open, onClose }) {
     );
 }
 
-// Agrega validación de las props
+
 SideNav.propTypes = {
     open: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,

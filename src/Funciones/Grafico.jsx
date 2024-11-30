@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { LineChart } from '@mui/x-charts';
-import { supabase } from "../Services/supabase.js"; // Ajusta la ruta al archivo supabase.js
-import { useAuth } from "../context/AuthContext"; // Asegúrate de que la ruta del contexto sea correcta
+import { supabase } from "../Services/supabase.js"; 
+import { useAuth } from "../context/AuthContext"; 
 
 const Grafico = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
-  const user = useAuth(); // Usamos el hook de autenticación para obtener el usuario actual
+  const user = useAuth(); 
   
   // Función para obtener los datos de egreso de la base de datos
   const fetchEgresoData = async () => {
@@ -17,26 +17,26 @@ const Grafico = () => {
     }
     
     setLoading(true);
-    setErrorMessage(null); // Reset error message before each request
+    setErrorMessage(null); 
     
     try {
-      // Obtén los datos de egreso filtrados por el UUID del usuario
+
       const { data: egresoData, error } = await supabase
         .from('egreso')
         .select('cantidad, creado_en')
-        .eq('uuid', user.id); // Asumiendo que el campo uuid es 'id' para el usuario
+        .eq('uuid', user.id); 
 
       if (error) throw error;
 
-      // Verifica si los datos están en el formato correcto
+      // Verificar si los datos son en el formato correcto
       if (egresoData && Array.isArray(egresoData)) {
-        // Procesa los datos para convertirlos en el formato adecuado para el gráfico
+        //convierte al formato correcto
         const formattedData = egresoData.map(item => ({
-          name: new Date(item.creado_en).toLocaleDateString(), // Formato de fecha en 'name'
-          value: item.cantidad, // Valor de 'cantidad' en 'value'
+          name: new Date(item.creado_en).toLocaleDateString(), 
+          value: item.cantidad, 
         }));
 
-        setData(formattedData); // Guarda los datos en el estado
+        setData(formattedData); 
       } else {
         setErrorMessage('No data found.');
       }
@@ -47,7 +47,6 @@ const Grafico = () => {
     }
   };
 
-  // Llama a la función de obtener datos cuando el componente se monte o cuando 'user' cambie
   useEffect(() => {
     fetchEgresoData();
   }, [user]);

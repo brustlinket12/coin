@@ -26,29 +26,27 @@ const Tareasdash = () => {
       const { data, error } = await supabase
         .from("tareas")
         .select("titulo, monto")
-        .eq("uuid", user.id) // Asegúrate de que `user.id` existe
+        .eq("uuid", user.id) 
         .limit(5);
   
       if (error) {
         throw error;
       }
   
-      setTareas(data); // Guarda las tareas obtenidas
+      setTareas(data); 
     } catch (error) {
       console.error("Error al obtener las tareas:", error.message);
       setError(error.message);
     } finally {
-      setLoading(false); // Finaliza el estado de carga
+      setLoading(false);
     }
   };
   
 
-  // Llama a la función al montar el componente
   useEffect(() => {
     fetchTareas();
   }, []);
 
-  // Renderiza el contenido
   return (
     <div
       style={{
